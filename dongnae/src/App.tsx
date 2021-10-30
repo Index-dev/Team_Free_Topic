@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { Route, RouteComponentProps, Switch, withRouter } from 'react-router';
 
-const Home = React.lazy(() => import(/*webpackChunkName: "page1"*/ './pages/home'));
+import Router from './router';
+import GlobalStyles from './globalStyle';
 
-const App: React.FC<RouteComponentProps> = ({ history }): JSX.Element => {
+const App = () => {
     return (
-        <React.Suspense fallback={<div>Loading...</div>}>
-            <Switch>
-                <Route exact path="/" component={Home} />
-            </Switch>
-        </React.Suspense>
+        <>
+            <Router />
+            <GlobalStyles />
+        </>
     );
 };
 
-export default withRouter(App);
+export default App;
