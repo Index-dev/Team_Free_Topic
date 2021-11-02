@@ -9,22 +9,22 @@ const Presenter = () => {
     }, []);
 
     return (
-        <Container ref={contRef}>
-            <TopCube>
-                <CubeHeader>title</CubeHeader>
-                <CubeShape1 />
-                <CubeShape2 />
-                <CubeShape4 />
-                <CubeShape5 />
-            </TopCube>
-            <BottomCube>
-                <CubeHeader>title</CubeHeader>
-                <CubeShape1 />
-                <CubeShape2 />
-                <CubeShape4 />
-                <CubeShape5 />
-            </BottomCube>
-        </Container>
+        <>
+            <Container ref={contRef}>
+                <Cube>
+                    <CubeHeader>title</CubeHeader>
+                    <CubeShape1 />
+                    <CubeShape2 />
+                    <CubeShape4 />
+                    <CubeShape5 />
+                </Cube>
+            </Container>
+
+            <div style={{ backgroundColor: 'red', height: '100vh' }} />
+            <div style={{ backgroundColor: 'orange', height: '100vh' }} />
+            <div style={{ backgroundColor: 'skyblue', height: '100vh' }} />
+            <div style={{ backgroundColor: 'black', height: '100vh' }} />
+        </>
     );
 };
 
@@ -32,25 +32,18 @@ export default Presenter;
 
 const Container = styled.div`
     width: 100vw;
-    height: 10vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     transform-style: preserve-3d;
 `;
 
-const BottomCube = styled.div`
+const Cube = styled.div`
     position: absolute;
     width: 200px;
     height: 200px;
-    transform: rotateX(70deg) rotateZ(45deg) translateZ(-100px);
-    transform-style: preserve-3d;
-`;
-const TopCube = styled.div`
-    position: absolute;
-    width: 240px;
-    height: 240px;
-    transform: rotateX(70deg) rotateZ(45deg) translateZ(50px);
+    transform: rotateX(70deg) rotateZ(45deg) translateZ(-50px);
     transform-style: preserve-3d;
 `;
 
@@ -61,6 +54,7 @@ const CubeShape = styled.div<{ width?: string; height?: string }>`
     top: 0;
     left: 0;
 `;
+
 CubeShape.defaultProps = {
     width: '100%',
     height: '100%',
