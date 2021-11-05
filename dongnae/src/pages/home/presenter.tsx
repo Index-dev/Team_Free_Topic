@@ -1,36 +1,35 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-const Presenter = () => {
-    const contRef = useRef<HTMLDivElement>(null);
+import Logo from '../../components/icons/logo';
 
-    useEffect(() => {
-        if (contRef.current) contRef.current.style.height = `${window.innerHeight}px`;
-    }, []);
+const Presenter = (props: propsIState) => {
+    const { cubeHeight, wrapperRef, cubeContRef } = props;
 
     return (
-        <>
-            <Container ref={contRef}>
-                <Cube>
-                    <CubeHeader>title</CubeHeader>
-                    <CubeShape1 />
-                    <CubeShape2 />
-                    <CubeShape4 />
-                    <CubeShape5 />
-                </Cube>
-            </Container>
-
-            <div style={{ backgroundColor: 'red', height: '100vh' }} />
-            <div style={{ backgroundColor: 'orange', height: '100vh' }} />
-            <div style={{ backgroundColor: 'skyblue', height: '100vh' }} />
-            <div style={{ backgroundColor: 'black', height: '100vh' }} />
-        </>
+        <Wrapper ref={wrapperRef}>
+            <CubeContainer ref={cubeContRef} cubeHeight={cubeHeight}>
+                <CubeHeader cubeHeight={cubeHeight}>
+                    <Logo />
+                </CubeHeader>
+                <CubeSquare1 />
+                <CubeSquare2 />
+                <CubeSquare3 />
+                <CubeSquare4 />
+            </CubeContainer>
+        </Wrapper>
     );
 };
 
 export default Presenter;
 
-const Container = styled.div`
+interface propsIState {
+    cubeHeight: number;
+    wrapperRef: React.RefObject<HTMLDivElement>;
+    cubeContRef: React.RefObject<HTMLDivElement>;
+}
+
+const Wrapper = styled.div`
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -39,51 +38,69 @@ const Container = styled.div`
     transform-style: preserve-3d;
 `;
 
-const Cube = styled.div`
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    transform: rotateX(70deg) rotateZ(45deg) translateZ(-50px);
-    transform-style: preserve-3d;
-`;
+const Background = styled.div`
+    width: 100%;
+    height: 100%;
 
-const CubeShape = styled.div<{ width?: string; height?: string }>`
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
     position: absolute;
     top: 0;
     left: 0;
 `;
 
-CubeShape.defaultProps = {
-    width: '100%',
-    height: '100%',
-};
+const CubeContainer = styled.div<{ cubeHeight: number }>`
+    --border-color: #cccccc;
 
-const CubeHeader = styled(CubeShape)`
-    border: 8px solid orange;
-    transform: translateZ(200px);
+    min-width: 120px;
+    width: min(55vw, 40vh);
+    max-width: 500px;
+    min-height: 120px;
+    height: min(55vw, 40vh);
+    max-height: 500px;
+
+    position: absolute;
+
+    transform: rotateX(70deg) rotateZ(45deg) translateZ(${(props) => (props.cubeHeight * -1) / 2}px);
+    transform-style: preserve-3d;
 `;
 
-const CubeShape1 = styled(CubeShape)`
-    border: 8px solid blue;
+const CubeShape = styled.div`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    background: #f7f7f7;
+`;
+
+const CubeHeader = styled(CubeShape)<{ cubeHeight: number }>`
+    transform: translate3d(0, 0, ${(props) => props.cubeHeight}px);
+    border: 1px solid var(--border-color);
+`;
+
+const CubeSquare1 = styled(CubeShape)`
     transform: rotateX(-90deg);
     transform-origin: bottom center;
+
+    border: 1px solid var(--border-color);
 `;
 
-const CubeShape2 = styled(CubeShape)`
-    border: 8px solid red;
+const CubeSquare2 = styled(CubeShape)`
     transform: rotateY(90deg);
     transform-origin: right center;
+
+    border: 1px solid var(--border-color);
 `;
 
-const CubeShape4 = styled(CubeShape)`
-    border: 8px solid skyblue;
+const CubeSquare3 = styled(CubeShape)`
     transform: rotateX(90deg);
     transform-origin: top center;
+
+    border: 1px solid var(--border-color);
 `;
-const CubeShape5 = styled(CubeShape)`
-    border: 8px solid green;
+const CubeSquare4 = styled(CubeShape)`
     transform: rotateY(-90deg);
     transform-origin: left center;
+
+    border: 1px solid var(--border-color);
 `;
