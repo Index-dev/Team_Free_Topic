@@ -10,7 +10,7 @@ const Presenter = (props: propsIState) => {
         <Wrapper ref={wrapperRef}>
             <Background>
                 <video
-                    src="https://player.vimeo.com/external/516156134.hd.mp4?s=df12332e07f4803bbc04b84135399e549a662033&profile_id=174"
+                    src="https://player.vimeo.com/external/511201710.hd.mp4?s=7eb1bc688b0c9c5c4e3dcca5e3c2a2a63626e546&profile_id=174"
                     muted
                     autoPlay
                     loop
@@ -20,7 +20,9 @@ const Presenter = (props: propsIState) => {
             </Background>
             <CubeContainer ref={cubeContRef} cubeHeight={cubeHeight}>
                 <CubeHeader cubeHeight={cubeHeight}>
-                    <Logo />
+                    <div style={{ width: '70%', height: '50%' }}>
+                        <Logo />
+                    </div>
                 </CubeHeader>
                 <CubeSquare1 />
                 <CubeSquare2 />
@@ -84,7 +86,7 @@ const CubeShape = styled.div`
 `;
 
 const CubeHeader = styled(CubeShape)<{ cubeHeight: number }>`
-    transform: translate3d(0, 0, ${(props) => props.cubeHeight}px);
+    transform: translate3d(0, 0, ${(props) => props.cubeHeight}px) rotate(-90deg);
     border: 1px solid var(--border-color);
 `;
 

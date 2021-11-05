@@ -8,14 +8,14 @@ function Container() {
     const cubeContRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (wrapperRef.current) wrapperRef.current.style.height = `${window.innerHeight}px`;
-    }, []);
-    useEffect(() => {
-        function handleResize() {
-            if (cubeContRef.current) setCubeHeight(cubeContRef.current.offsetHeight);
-        }
+        handleResize();
         window.onresize = handleResize;
     }, []);
+
+    function handleResize() {
+        if (cubeContRef.current) setCubeHeight(cubeContRef.current.offsetHeight);
+        if (wrapperRef.current) wrapperRef.current.style.height = `${window.innerHeight}px`;
+    }
 
     return <Presenter cubeHeight={cubeHeight} wrapperRef={wrapperRef} cubeContRef={cubeContRef} />;
 }
