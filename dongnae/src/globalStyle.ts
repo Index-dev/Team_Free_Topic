@@ -1,5 +1,8 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+import scrollbar from 'smooth-scrollbar';
+
+scrollbar.init(document.querySelector('#dongnae-body') as HTMLElement);
 
 const globalStyles = createGlobalStyle`
     ${reset};
@@ -13,10 +16,8 @@ const globalStyles = createGlobalStyle`
         box-sizing:border-box;
     }
     body{ 
-        height: 100%;
         font-family: 'Noto Sans KR', sans-serif;
-        
-        overflow-x:hidden;
+        overflow-x: hidden;
     }
 `;
 
