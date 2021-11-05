@@ -8,6 +8,16 @@ const Presenter = (props: propsIState) => {
 
     return (
         <Wrapper ref={wrapperRef}>
+            <Background>
+                <video
+                    src="https://player.vimeo.com/external/516156134.hd.mp4?s=df12332e07f4803bbc04b84135399e549a662033&profile_id=174"
+                    muted
+                    autoPlay
+                    loop
+                    playsInline
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                ></video>
+            </Background>
             <CubeContainer ref={cubeContRef} cubeHeight={cubeHeight}>
                 <CubeHeader cubeHeight={cubeHeight}>
                     <Logo />
