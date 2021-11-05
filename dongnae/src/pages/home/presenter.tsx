@@ -1,95 +1,98 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-const Presenter = () => {
-    const contRef = useRef<HTMLDivElement>(null);
+import Logo from '../../components/icons/logo';
 
-    useEffect(() => {
-        if (contRef.current) contRef.current.style.height = `${window.innerHeight}px`;
-    }, []);
+const Presenter = (props: propsIState) => {
+    const { cubeHeight, wrapperRef, cubeContRef } = props;
 
     return (
-        <Container ref={contRef}>
-            <TopCube>
-                <CubeHeader>title</CubeHeader>
-                <CubeShape1 />
-                <CubeShape2 />
-                <CubeShape4 />
-                <CubeShape5 />
-            </TopCube>
-            <BottomCube>
-                <CubeHeader>title</CubeHeader>
-                <CubeShape1 />
-                <CubeShape2 />
-                <CubeShape4 />
-                <CubeShape5 />
-            </BottomCube>
-        </Container>
+        <Wrapper ref={wrapperRef}>
+            <CubeContainer ref={cubeContRef} cubeHeight={cubeHeight}>
+                <CubeHeader>
+                    <Logo />
+                </CubeHeader>
+                <CubeSquare1 />
+                <CubeSquare2 />
+                <CubeSquare3 />
+                <CubeSquare4 />
+            </CubeContainer>
+        </Wrapper>
     );
 };
 
 export default Presenter;
 
-const Container = styled.div`
+interface propsIState {
+    cubeHeight: number;
+    wrapperRef: React.RefObject<HTMLDivElement>;
+    cubeContRef: React.RefObject<HTMLDivElement>;
+}
+
+const Wrapper = styled.div`
     width: 100vw;
-    height: 10vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     transform-style: preserve-3d;
 `;
 
-const BottomCube = styled.div`
+const CubeContainer = styled.div<{ cubeHeight: number }>`
+    --height_adjust: ${(props) => -props.cubeHeight / 2}px;
+    --borderColor: #cccccc;
+
+    min-width: 200px;
+    width: min(55vw, 40vh);
+    max-width: 500px;
+    min-height: 200px;
+    height: min(55vw, 40vh);
+    max-height: 500px;
+
     position: absolute;
-    width: 200px;
-    height: 200px;
-    transform: rotateX(70deg) rotateZ(45deg) translateZ(-100px);
-    transform-style: preserve-3d;
-`;
-const TopCube = styled.div`
-    position: absolute;
-    width: 240px;
-    height: 240px;
-    transform: rotateX(70deg) rotateZ(45deg) translateZ(50px);
+
+    transform: rotateX(70deg) rotateZ(45deg) translateZ(var(--height_adjust));
     transform-style: preserve-3d;
 `;
 
-const CubeShape = styled.div<{ width?: string; height?: string }>`
-    width: ${(props) => props.width};
-    height: ${(props) => props.height};
+const CubeShape = styled.div`
+    width: 100%;
+    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
+
+    background: #f7f7f7;
 `;
-CubeShape.defaultProps = {
-    width: '100%',
-    height: '100%',
-};
 
 const CubeHeader = styled(CubeShape)`
-    border: 8px solid orange;
-    transform: translateZ(200px);
+    transform: translateZ(calc(-2 * var(--height_adjust)));
+    border: 1px solid var(--borderColor);
 `;
 
-const CubeShape1 = styled(CubeShape)`
-    border: 8px solid blue;
+const CubeSquare1 = styled(CubeShape)`
     transform: rotateX(-90deg);
     transform-origin: bottom center;
+
+    border: 1px solid var(--borderColor);
 `;
 
-const CubeShape2 = styled(CubeShape)`
-    border: 8px solid red;
+const CubeSquare2 = styled(CubeShape)`
     transform: rotateY(90deg);
     transform-origin: right center;
+
+    border: 1px solid var(--borderColor);
 `;
 
-const CubeShape4 = styled(CubeShape)`
-    border: 8px solid skyblue;
+const CubeSquare3 = styled(CubeShape)`
     transform: rotateX(90deg);
     transform-origin: top center;
+
+    border: 1px solid var(--borderColor);
 `;
-const CubeShape5 = styled(CubeShape)`
-    border: 8px solid green;
+const CubeSquare4 = styled(CubeShape)`
     transform: rotateY(-90deg);
     transform-origin: left center;
+
+    border: 1px solid var(--borderColor);
 `;
