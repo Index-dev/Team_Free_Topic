@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Presenter from './presenter';
 
 function Container() {
@@ -13,6 +13,7 @@ function Container() {
     useEffect(() => {
         handleResize();
         window.addEventListener('resize', handleResize);
+        window.addEventListener('keydown', cubeKeyboardMove);
 
         // cube 회전 이벤트
         if (cubeContRef.current) {
@@ -43,7 +44,24 @@ function Container() {
             });
         }
 
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('keydown', cubeKeyboardMove);
+        };
+    }, []);
+
+    // 키보드 큐브 이동 콜백함수
+    const cubeKeyboardMove = useCallback((event) => {
+        if (cubeContRef.current) {
+            if (event.key === 'ArrowLeft') {
+                rotateDegree.current -= 180;
+                translateCube();
+            }
+            if (event.key === 'ArrowRight') {
+                rotateDegree.current += 180;
+                translateCube();
+            }
+        }
     }, []);
 
     // 큐브 처음 클릭(터치)한 경우
@@ -62,7 +80,7 @@ function Container() {
 
     // 큐브 이동이 끝난 경우
     function cudeClickEnd() {
-        if (cubeContRef.current && cubeCheckRef.current === true) {
+        if (cubeContRef.current && cubeCheckRef.current) {
             cubeCheckRef.current = false;
 
             if (cubeEndClientXRef.current - cubeStartClientXRef.current > 20) {
@@ -70,7 +88,13 @@ function Container() {
             } else if (cubeEndClientXRef.current - cubeStartClientXRef.current < -20) {
                 rotateDegree.current += 180;
             }
+            translateCube();
+        }
+    }
 
+    // 회전 함수 분할
+    function translateCube() {
+        if (cubeContRef.current) {
             cubeContRef.current.style.transition = `0.8s ease-out`;
             cubeContRef.current.style.transform = `rotateX(70deg) 
                                                    rotateZ(${45 + rotateDegree.current}deg)
