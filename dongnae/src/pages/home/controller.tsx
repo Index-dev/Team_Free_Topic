@@ -9,6 +9,7 @@ function Container() {
     const cubeStartClientXRef = useRef<number>(0); // 큐브 클릭(터치) 처음 위치
     const cubeEndClientXRef = useRef<number>(0); // 큐브 클릭(터치) 마지막 위치
     const cubeCheckRef = useRef<boolean>(false); // 큐브 클릭(터치) 여부
+    const cubeRotateLockRef = useRef<boolean>(false); // 큐브 회전 중 변경 금지
 
     useEffect(() => {
         handleResize();
@@ -42,6 +43,11 @@ function Container() {
             cubeContRef.current.addEventListener('touchend', () => {
                 cudeClickEnd();
             });
+
+            // 큐브 회전 중 추가회전 방지
+            cubeContRef.current.addEventListener('transitionend', () => {
+                cubeRotateLockRef.current = false;
+            });
         }
 
         return () => {
@@ -52,7 +58,9 @@ function Container() {
 
     // 키보드 큐브 이동 콜백함수
     const cubeKeyboardMove = useCallback((event) => {
-        if (cubeContRef.current) {
+        if (cubeContRef.current && cubeRotateLockRef.current === false) {
+            cubeRotateLockRef.current = true;
+
             if (event.key === 'ArrowLeft') {
                 rotateDegree.current -= 180;
                 translateCube();
@@ -80,13 +88,15 @@ function Container() {
 
     // 큐브 이동이 끝난 경우
     function cudeClickEnd() {
-        if (cubeContRef.current && cubeCheckRef.current) {
+        if (cubeContRef.current && cubeCheckRef.current === true && cubeRotateLockRef.current === false) {
             cubeCheckRef.current = false;
-
+            cubeRotateLockRef.current = true;
             if (cubeEndClientXRef.current - cubeStartClientXRef.current > 20) {
                 rotateDegree.current -= 180;
             } else if (cubeEndClientXRef.current - cubeStartClientXRef.current < -20) {
                 rotateDegree.current += 180;
+            } else {
+                cubeRotateLockRef.current = true;
             }
             translateCube();
         }
