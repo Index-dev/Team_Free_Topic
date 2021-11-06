@@ -96,7 +96,8 @@ function Container() {
             } else if (cubeEndClientXRef.current - cubeStartClientXRef.current < -20) {
                 rotateDegree.current += 180;
             } else {
-                cubeRotateLockRef.current = true;
+                cubeRotateLockRef.current = false;
+                return;
             }
             translateCube();
         }
