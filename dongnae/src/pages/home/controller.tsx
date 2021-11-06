@@ -10,19 +10,6 @@ function Container() {
     const cubeEndClientXRef = useRef<number>(0); // 큐브 클릭(터치) 마지막 위치
     const cubeCheckRef = useRef<boolean>(false); // 큐브 클릭(터치) 여부
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         if (cubeContRef.current) {
-    //             rotateDegree.current += 1;
-    //             cubeContRef.current.style.transform = `rotateX(70deg)
-    //                                                    rotateZ(${45 + rotateDegree.current}deg)
-    //                                                    translateZ(${-cubeHeight / 2}px)`;
-    //         }
-    //     }, 100);
-
-    //     return () => clearInterval(interval);
-    // }, []);
-
     useEffect(() => {
         handleResize();
         window.addEventListener('resize', handleResize);
@@ -84,9 +71,9 @@ function Container() {
                 rotateDegree.current += 180;
             }
 
-            cubeContRef.current.style.transform = `rotateX(70deg)
+            cubeContRef.current.style.transform = `rotateX(70deg) 
                                                    rotateZ(${45 + rotateDegree.current}deg)
-                                                   translateZ(${-cubeHeight / 2}px)`;
+                                                   translateZ(${-cubeContRef.current.offsetHeight / 2}px)`;
         }
     }
 
