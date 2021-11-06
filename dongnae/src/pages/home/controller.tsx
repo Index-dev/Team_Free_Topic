@@ -71,6 +71,7 @@ function Container() {
                 rotateDegree.current += 180;
             }
 
+            cubeContRef.current.style.transition = `0.8s ease-out`;
             cubeContRef.current.style.transform = `rotateX(70deg) 
                                                    rotateZ(${45 + rotateDegree.current}deg)
                                                    translateZ(${-cubeContRef.current.offsetHeight / 2}px)`;

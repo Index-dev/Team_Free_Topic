@@ -75,8 +75,6 @@ const CubeContainer = styled.div<{ cubeHeight: number }>`
 
     transform: rotateX(70deg) rotateZ(45deg) translateZ(${(props) => (props.cubeHeight * -1) / 2}px);
     transform-style: preserve-3d;
-
-    transition: 0.8s ease-out;
 `;
 
 const CubeShape = styled.div`
