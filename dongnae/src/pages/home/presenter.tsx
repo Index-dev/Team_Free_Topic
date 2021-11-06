@@ -15,7 +15,7 @@ const Presenter = (props: propsIState) => {
                     autoPlay
                     loop
                     playsInline
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: '.5' }}
                 ></video>
             </Background>
             <CubeContainer ref={cubeContRef} cubeHeight={cubeHeight}>
@@ -57,6 +57,8 @@ const Background = styled.div`
     position: absolute;
     top: 0;
     left: 0;
+
+    background-color: #777777;
 `;
 
 const CubeContainer = styled.div<{ cubeHeight: number }>`
@@ -87,6 +89,10 @@ const CubeShape = styled.div`
 
 const CubeHeader = styled(CubeShape)<{ cubeHeight: number }>`
     transform: translate3d(0, 0, ${(props) => props.cubeHeight}px) rotate(-90deg);
+
+    background: #22ff22;
+
+    padding-left: 1em;
     border: 1px solid var(--border-color);
 `;
 
