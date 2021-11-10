@@ -6,7 +6,7 @@ import { screenTypeState } from '../../modules/recoil/screenType';
 import Logo from '../../components/icons/logo';
 
 function Presenter(props: propsIState) {
-    const { desktopContRef } = props;
+    const { desktopContRef, mobileContRef } = props;
     const screenType = useRecoilValue(screenTypeState);
 
     return (
@@ -21,7 +21,7 @@ function Presenter(props: propsIState) {
                     <h2>desktop Header</h2>
                 </Desktop>
             ) : (
-                <Mobile>
+                <Mobile ref={mobileContRef}>
                     <h2>mobile Header</h2>
                 </Mobile>
             )}
@@ -33,6 +33,7 @@ export default Presenter;
 
 interface propsIState {
     desktopContRef: React.RefObject<HTMLDivElement>;
+    mobileContRef: React.RefObject<HTMLDivElement>;
 }
 
 const LogoContainer = styled.div`
