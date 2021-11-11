@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Presenter from './presenter';
 
 function Container() {
+    // useState
     const [cubeHeight, setCubeHeight] = useState(0);
+
+    // useRef
     const wrapperRef = useRef<HTMLDivElement>(null);
     const cubeContRef = useRef<HTMLDivElement>(null);
     const rotateDegree = useRef<number>(0);

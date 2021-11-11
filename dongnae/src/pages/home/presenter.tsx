@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Logo from '../../components/icons/logo';
+import KaKaoMap from '../../components/home/kakaoMap';
 
 const Presenter = (props: propsIState) => {
     const { cubeHeight, wrapperRef, cubeContRef } = props;
@@ -18,15 +19,20 @@ const Presenter = (props: propsIState) => {
                     style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: '.5' }}
                 ></video>
             </Background>
+
             <CubeContainer ref={cubeContRef} cubeHeight={cubeHeight}>
                 <CubeHeader cubeHeight={cubeHeight}>
                     <div style={{ width: '70%', height: '50%' }}>
                         <Logo />
                     </div>
                 </CubeHeader>
-                <CubeSquare1 />
+                <CubeSquare1>
+                    <KaKaoMap reverse={false} />
+                </CubeSquare1>
                 <CubeSquare2 />
-                <CubeSquare3 />
+                <CubeSquare3>
+                    <KaKaoMap reverse={true} />
+                </CubeSquare3>
                 <CubeSquare4 />
             </CubeContainer>
         </Wrapper>
@@ -116,6 +122,7 @@ const CubeSquare3 = styled(CubeShape)`
 
     border: 1px solid var(--border-color);
 `;
+
 const CubeSquare4 = styled(CubeShape)`
     transform: rotateY(-90deg);
     transform-origin: left center;
