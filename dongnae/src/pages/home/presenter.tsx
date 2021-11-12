@@ -1,35 +1,55 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
+import { useScroll } from '../../hooks/useScroll';
 import Logo from '../../components/icons/logo';
 
 const Presenter = (props: propsIState) => {
     const { cubeHeight, wrapperRef, cubeContRef } = props;
+    const { scrollY, scrollDirection } = useScroll();
+
+    const listener = () => {
+        console.log(document.querySelector('.scroll-content')?.getClientRects());
+        // setBodyOffset(document.body.getBoundingClientRect());
+        // setScrollY(-bodyOffset.top);
+        // setScrollX(bodyOffset.left);
+        // setScrollDirection(lastScrollTop > -bodyOffset.top ? 'down' : 'up');
+        // lastScrollTopRef.current = -bodyOffset.top;
+    };
+
+    useEffect(() => {
+        const scrollElem = document.querySelector('.scroll-content') as HTMLDivElement;
+        scrollElem.addEventListener('scroll', listener);
+        return () => scrollElem.removeEventListener('scroll', listener);
+    });
 
     return (
-        <Wrapper ref={wrapperRef}>
-            <Background>
-                <video
-                    src="https://player.vimeo.com/external/511201710.hd.mp4?s=7eb1bc688b0c9c5c4e3dcca5e3c2a2a63626e546&profile_id=174"
-                    muted
-                    autoPlay
-                    loop
-                    playsInline
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: '.5' }}
-                ></video>
-            </Background>
-            <CubeContainer ref={cubeContRef} cubeHeight={cubeHeight}>
-                <CubeHeader cubeHeight={cubeHeight}>
-                    <div style={{ width: '70%', height: '50%' }}>
-                        <Logo />
-                    </div>
-                </CubeHeader>
-                <CubeSquare1 />
-                <CubeSquare2 />
-                <CubeSquare3 />
-                <CubeSquare4 />
-            </CubeContainer>
-        </Wrapper>
+        <>
+            <Wrapper ref={wrapperRef}>
+                <Background>
+                    <video
+                        src="https://player.vimeo.com/external/511201710.hd.mp4?s=7eb1bc688b0c9c5c4e3dcca5e3c2a2a63626e546&profile_id=174"
+                        muted
+                        autoPlay
+                        loop
+                        playsInline
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: '.5' }}
+                    ></video>
+                </Background>
+                <CubeContainer ref={cubeContRef} cubeHeight={cubeHeight}>
+                    <CubeHeader cubeHeight={cubeHeight}>
+                        <div style={{ width: '70%', height: '50%' }}>
+                            <Logo />
+                        </div>
+                    </CubeHeader>
+                    <CubeSquare1 />
+                    <CubeSquare2 />
+                    <CubeSquare3 />
+                    <CubeSquare4 />
+                </CubeContainer>
+            </Wrapper>
+            <div style={{ marginBottom: '10rem' }}></div>
+        </>
     );
 };
 
