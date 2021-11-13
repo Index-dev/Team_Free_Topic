@@ -1,15 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
 
-import { useScroll } from '../../hooks/useScroll';
-import { screenTypeState } from '../../modules/recoil/screenType';
+import { screenTypeRecoil } from '../../modules/recoil/screenType';
 import Logo from '../../components/icons/logo';
 
 function Presenter(props: propsIState) {
     const { desktopContRef, mobileContRef } = props;
-    const screenType = useRecoilValue(screenTypeState);
-    const { scrollY, scrollDirection } = useScroll();
+    const screenInfo = screenTypeRecoil();
 
     return (
         <>
@@ -18,15 +15,13 @@ function Presenter(props: propsIState) {
                     <Logo />
                 </LogoSizer>
             </LogoContainer>
-            {screenType === 'isPC' ? (
+            {screenInfo.type === 'isPC' ? (
                 <Desktop ref={desktopContRef}>
                     <h2>desktop Header</h2>
                 </Desktop>
             ) : (
                 <Mobile ref={mobileContRef}>
                     <h2>mobile Header</h2>
-                    {scrollY}
-                    {scrollDirection}
                 </Mobile>
             )}
         </>

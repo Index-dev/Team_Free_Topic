@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useCallback } from 'react';
-import { useRecoilValue } from 'recoil';
 
+import { screenTypeRecoil } from '../../modules/recoil/screenType';
 import { useScroll } from '../../hooks/useScroll';
+
 import Presenter from './presenter';
-import { screenTypeState } from '../../modules/recoil/screenType';
 
 function Container() {
-    const screenType = useRecoilValue(screenTypeState);
+    const screenInfo = screenTypeRecoil();
     const desktopContRef = useRef<HTMLDivElement>(null);
     const mobileContRef = useRef<HTMLDivElement>(null);
+
+    const { scrollY, scrollDirection } = useScroll();
 
     // Desktop 헤더 등장
     const transformDesktopHeader = useCallback(
@@ -24,12 +26,12 @@ function Container() {
     );
 
     useEffect(() => {
-        if (screenType === 'isPC') {
+        if (screenInfo.type === 'isPC') {
             window.addEventListener('mousemove', transformDesktopHeader);
 
             return () => window.removeEventListener('mousemove', transformDesktopHeader);
         }
-    }, [screenType]);
+    }, [screenInfo]);
 
     const passProps = {
         desktopContRef,
