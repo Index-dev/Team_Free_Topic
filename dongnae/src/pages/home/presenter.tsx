@@ -1,27 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-import { useScroll } from '../../hooks/useScroll';
 import Logo from '../../components/icons/logo';
 
 const Presenter = (props: propsIState) => {
     const { cubeHeight, wrapperRef, cubeContRef } = props;
-    const { scrollY, scrollDirection } = useScroll();
-
-    const listener = () => {
-        console.log(document.querySelector('.scroll-content')?.getClientRects());
-        // setBodyOffset(document.body.getBoundingClientRect());
-        // setScrollY(-bodyOffset.top);
-        // setScrollX(bodyOffset.left);
-        // setScrollDirection(lastScrollTop > -bodyOffset.top ? 'down' : 'up');
-        // lastScrollTopRef.current = -bodyOffset.top;
-    };
-
-    useEffect(() => {
-        const scrollElem = document.querySelector('.scroll-content') as HTMLDivElement;
-        scrollElem.addEventListener('scroll', listener);
-        return () => scrollElem.removeEventListener('scroll', listener);
-    });
 
     return (
         <>
@@ -48,7 +31,7 @@ const Presenter = (props: propsIState) => {
                     <CubeSquare4 />
                 </CubeContainer>
             </Wrapper>
-            <div style={{ marginBottom: '10rem' }}></div>
+            <div style={{ marginBottom: '100rem' }}></div>
         </>
     );
 };

@@ -6,12 +6,11 @@ export function useScroll() {
 
     const [scrollY, setScrollY] = useState<number>(scrollbar.offset.y);
     const [scrollX, setScrollX] = useState<number>(scrollbar.offset.x);
-    const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>();
+    const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
 
     const lastScrollTopRef = useRef(0);
 
     const listener = () => {
-        console.log(scrollbar.offset);
         setScrollY(scrollbar.offset.y);
         setScrollX(scrollbar.offset.x);
         setScrollDirection(lastScrollTopRef.current > scrollY + 5 ? 'down' : 'up');
