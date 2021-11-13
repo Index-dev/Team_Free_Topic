@@ -5,7 +5,7 @@ import { screenTypeRecoil } from '../../modules/recoil/screenType';
 import Logo from '../../components/icons/logo';
 
 function Presenter(props: propsIState) {
-    const { desktopContRef, mobileContRef } = props;
+    const { scrollY, scrollDirection, desktopContRef, mobileContRef } = props;
     const screenInfo = screenTypeRecoil();
 
     return (
@@ -22,6 +22,8 @@ function Presenter(props: propsIState) {
             ) : (
                 <Mobile ref={mobileContRef}>
                     <h2>mobile Header</h2>
+                    {scrollY}
+                    {scrollDirection}
                 </Mobile>
             )}
         </>
@@ -31,6 +33,8 @@ function Presenter(props: propsIState) {
 export default Presenter;
 
 interface propsIState {
+    scrollY: number;
+    scrollDirection: 'up' | 'down';
     desktopContRef: React.RefObject<HTMLDivElement>;
     mobileContRef: React.RefObject<HTMLDivElement>;
 }

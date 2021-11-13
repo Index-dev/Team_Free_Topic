@@ -13,7 +13,9 @@ export function useScroll() {
     const listener = () => {
         setScrollY(scrollbar.offset.y);
         setScrollX(scrollbar.offset.x);
-        setScrollDirection(lastScrollTopRef.current > scrollY + 5 ? 'down' : 'up');
+        setScrollDirection(
+            lastScrollTopRef.current > scrollY ? 'up' : lastScrollTopRef.current < scrollY ? 'down' : scrollDirection,
+        );
         lastScrollTopRef.current = scrollY;
     };
 
