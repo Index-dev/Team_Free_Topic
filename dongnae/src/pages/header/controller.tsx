@@ -34,6 +34,8 @@ function Container() {
     }, [screenInfo]);
 
     const passProps = {
+        scrollY,
+        scrollDirection,
         desktopContRef,
         mobileContRef,
     };
