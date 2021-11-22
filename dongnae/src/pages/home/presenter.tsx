@@ -3,9 +3,10 @@ import styled from 'styled-components';
 
 import Logo from '../../components/icons/logo';
 import KaKaoMap from '../../components/home/kakaoMap';
+import { Idongnae } from '../../interface/home';
 
 const Presenter = (props: propsIState) => {
-    const { cubeHeight, wrapperRef, cubeContRef } = props;
+    const { cubeHeight, wrapperRef, cubeContRef, dongnaeIndex, dongnaeArray } = props;
 
     return (
         <Wrapper ref={wrapperRef}>
@@ -35,6 +36,14 @@ const Presenter = (props: propsIState) => {
                 </CubeSquare3>
                 <CubeSquare4 />
             </CubeContainer>
+
+            <ContentsContainer>
+                <ContentsHeader>{dongnaeIndex + 1}</ContentsHeader>
+                <ContentsBody>
+                    <ContentsTitle>{dongnaeArray[dongnaeIndex].title}</ContentsTitle>
+                    <ContentsDescription>{dongnaeArray[dongnaeIndex].description}</ContentsDescription>
+                </ContentsBody>
+            </ContentsContainer>
         </Wrapper>
     );
 };
@@ -45,14 +54,19 @@ interface propsIState {
     cubeHeight: number;
     wrapperRef: React.RefObject<HTMLDivElement>;
     cubeContRef: React.RefObject<HTMLDivElement>;
+    dongnaeIndex: number;
+    dongnaeArray: Idongnae[];
 }
 
 const Wrapper = styled.div`
     width: 100vw;
     height: 100vh;
+
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
+
     transform-style: preserve-3d;
 `;
 
@@ -71,13 +85,11 @@ const CubeContainer = styled.div<{ cubeHeight: number }>`
     --border-color: #cccccc;
 
     min-width: 120px;
-    width: min(55vw, 40vh);
+    width: min(45vw, 40vh);
     max-width: 500px;
     min-height: 120px;
-    height: min(55vw, 40vh);
+    height: min(45vw, 40vh);
     max-height: 500px;
-
-    position: absolute;
 
     transform: rotateX(70deg) rotateZ(45deg) translateZ(${(props) => (props.cubeHeight * -1) / 2}px);
     transform-style: preserve-3d;
@@ -128,4 +140,31 @@ const CubeSquare4 = styled(CubeShape)`
     transform-origin: left center;
 
     border: 1px solid var(--border-color);
+`;
+
+const ContentsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    z-index: 0;
+
+    margin-left: min(150px, 40px + 12.5vw);
+
+    text-align: center;
+`;
+
+const ContentsHeader = styled.div``;
+
+const ContentsBody = styled.div``;
+
+const ContentsTitle = styled.h2`
+    font-size: min(3.8em, 1.2em + 5.5vw);
+    font-weight: 700;
+
+    margin: 28px 0;
+`;
+
+const ContentsDescription = styled.span`
+    font-size: min(1.3em, 0.6em + 1.5vw);
 `;
