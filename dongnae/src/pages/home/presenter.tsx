@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 
 import Logo from '../../components/icons/logo';
@@ -6,7 +6,16 @@ import KaKaoMap from '../../components/home/kakaoMap';
 import { Idongnae } from '../../interface/home';
 
 const Presenter = (props: propsIState) => {
-    const { cubeHeight, wrapperRef, cubeContRef, dongnaeIndex, dongnaeArray } = props;
+    const {
+        cubeHeight,
+        wrapperRef,
+        cubeContRef,
+        dongnaeIndex,
+        dongnaeIndexOdd,
+        dongnaeIndexEven,
+        dongnaeArray,
+        contentsBodyRef,
+    } = props;
 
     return (
         <Wrapper ref={wrapperRef}>
@@ -27,19 +36,52 @@ const Presenter = (props: propsIState) => {
                         <Logo />
                     </div>
                 </CubeHeader>
-                <CubeSquare1>
-                    <KaKaoMap reverse={false} />
-                </CubeSquare1>
-                <CubeSquare2 />
-                <CubeSquare3>
-                    <KaKaoMap reverse={true} />
-                </CubeSquare3>
-                <CubeSquare4 />
+                {useMemo(() => {
+                    return (
+                        <>
+                            <CubeSquare1>
+                                <KaKaoMap
+                                    reverse={false}
+                                    LatLngX={dongnaeArray[dongnaeIndex] && dongnaeArray[dongnaeIndex].LatLngX}
+                                    LatLngY={dongnaeArray[dongnaeIndex] && dongnaeArray[dongnaeIndex].LatLngY}
+                                />
+                            </CubeSquare1>
+                            <CubeSquare2>
+                                <CubeImage1 src={dongnaeArray[dongnaeIndex] && dongnaeArray[dongnaeIndex].imageUrl} />
+                            </CubeSquare2>
+                        </>
+                    );
+                }, [dongnaeIndexEven])}
+
+                {useMemo(() => {
+                    return (
+                        <>
+                            <CubeSquare3>
+                                <KaKaoMap
+                                    reverse={true}
+                                    LatLngX={dongnaeArray[dongnaeIndex] && dongnaeArray[dongnaeIndex].LatLngX}
+                                    LatLngY={dongnaeArray[dongnaeIndex] && dongnaeArray[dongnaeIndex].LatLngY}
+                                />
+                            </CubeSquare3>
+                            <CubeSquare4>
+                                <CubeImage2 src={dongnaeArray[dongnaeIndex] && dongnaeArray[dongnaeIndex].imageUrl} />
+                            </CubeSquare4>
+                        </>
+                    );
+                }, [dongnaeIndexOdd])}
             </CubeContainer>
 
             <ContentsContainer>
-                <ContentsHeader>{dongnaeIndex + 1}</ContentsHeader>
-                <ContentsBody>
+                <ContentsHeader index={dongnaeIndex} length={dongnaeArray.length}>
+                    {dongnaeArray.map((dongnae, index) => {
+                        return (
+                            <ContentsIndexList key={index}>
+                                <ContentsIndex target={index === dongnaeIndex}>{index + 1}</ContentsIndex>
+                            </ContentsIndexList>
+                        );
+                    })}
+                </ContentsHeader>
+                <ContentsBody ref={contentsBodyRef}>
                     <ContentsTitle>{dongnaeArray[dongnaeIndex].title}</ContentsTitle>
                     <ContentsDescription>{dongnaeArray[dongnaeIndex].description}</ContentsDescription>
                 </ContentsBody>
@@ -55,7 +97,10 @@ interface propsIState {
     wrapperRef: React.RefObject<HTMLDivElement>;
     cubeContRef: React.RefObject<HTMLDivElement>;
     dongnaeIndex: number;
+    dongnaeIndexOdd: boolean;
+    dongnaeIndexEven: boolean;
     dongnaeArray: Idongnae[];
+    contentsBodyRef: React.RefObject<HTMLDivElement>;
 }
 
 const Wrapper = styled.div`
@@ -142,21 +187,68 @@ const CubeSquare4 = styled(CubeShape)`
     border: 1px solid var(--border-color);
 `;
 
+const CubeImage = styled.img`
+    width: 100%;
+    height: 100%;
+    -webkit-user-drag: none;
+`;
+
+const CubeImage1 = styled(CubeImage)`
+    transform: rotate(-90deg);
+`;
+
+const CubeImage2 = styled(CubeImage)`
+    transform: rotate(90deg);
+`;
+
 const ContentsContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
+
+    width: 330px;
 
     z-index: 0;
 
     margin-left: min(150px, 40px + 12.5vw);
 
     text-align: center;
+
+    overflow: hidden;
 `;
 
-const ContentsHeader = styled.div``;
+const ContentsHeader = styled.div<{ index: number; length: number }>`
+    width: ${(props) => 160 * props.length}px;
+
+    display: flex;
+
+    transform: translateX(${(props) => 85 - props.index * 160}px);
+
+    transition: 0.8s ease-out;
+`;
+
+const ContentsIndexList = styled.div`
+    width: 160px;
+`;
 
 const ContentsBody = styled.div``;
+
+const ContentsIndex = styled.span<{ target: boolean }>`
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0 auto;
+
+    border-radius: 50%;
+
+    background-color: ${(props) => props.target && 'red'};
+
+    transition: 0.8s ease-out;
+`;
 
 const ContentsTitle = styled.h2`
     font-size: min(3.8em, 1.2em + 5.5vw);

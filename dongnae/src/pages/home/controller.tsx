@@ -1,42 +1,62 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Idongnae } from '../../interface/home';
 import Presenter from './presenter';
+import kakaofriends from '../../assets/images/kakaofriends.png';
 
 function Container() {
     // useState
     const [cubeHeight, setCubeHeight] = useState(0);
-    const [dongnaeIndex, setDongnaeIndex] = React.useState<number>(0); // 동내배열 현재 인덱스
+    const [dongnaeIndex, setDongnaeIndex] = useState<number>(0); // 동내배열 현재 인덱스
+    const [dongnaeIndexOdd, setDongnaeIndexOdd] = useState<boolean>(false); // 인덱스 홀수 반응형을 위한 상태값
+    const [dongnaeIndexEven, setDongnaeIndexEven] = useState<boolean>(false); // 인덱스 홀수 반응형을 위한 상태값
 
     // useRef
     const wrapperRef = useRef<HTMLDivElement>(null);
+
     const cubeContRef = useRef<HTMLDivElement>(null);
-    const rotateDegree = useRef<number>(0);
     const cubeStartClientXRef = useRef<number>(0); // 큐브 클릭(터치) 처음 위치
     const cubeEndClientXRef = useRef<number>(0); // 큐브 클릭(터치) 마지막 위치
     const cubeCheckRef = useRef<boolean>(false); // 큐브 클릭(터치) 여부
     const cubeRotateLockRef = useRef<boolean>(false); // 큐브 회전 중 변경 금지
+    const rotateDegree = useRef<number>(0);
+
     const dongnaeIndexRef = useRef<number>(dongnaeIndex); // 동내배열 현재 인덱스
+
+    const contentsBodyRef = useRef<HTMLDivElement>(null);
 
     // variable
     const dongnaeArray: Idongnae[] = [
         {
             title: '안양',
-            description: '안',
+            description: '안양은 성찬이가 사는 동네입니다.',
+            LatLngX: 37.3901,
+            LatLngY: 126.9507,
+            imageUrl: kakaofriends,
         },
         {
             title: '부천',
-            description: '부천은 영현이가 사는 동네입니다.부천은 영현이가 사는 동네입니다.',
+            description: '부천은 영현이가 사는 동네입니다.',
+            LatLngX: 37.4842,
+            LatLngY: 126.7827,
+            imageUrl: kakaofriends,
         },
         {
             title: '역삼',
             description: '한 때 직장이었던 동네입니다.',
+            LatLngX: 37.5008,
+            LatLngY: 127.0365,
+            imageUrl: kakaofriends,
         },
         {
             title: '명동',
             description: '놀러갔던 동네입니다.',
+            LatLngX: 37.5609,
+            LatLngY: 126.9864,
+            imageUrl: kakaofriends,
         },
     ];
 
+    // useEffect
     useEffect(() => {
         handleResize();
         window.addEventListener('resize', handleResize);
@@ -116,9 +136,6 @@ function Container() {
 
     // 큐브 이동이 끝난 경우
     function cudeClickEnd() {
-        console.log(
-            `cubeCheckRef.current=${cubeCheckRef.current}, cubeRotateLockRef.current=${cubeRotateLockRef.current}`,
-        );
         if (cubeContRef.current && cubeCheckRef.current === true && cubeRotateLockRef.current === false) {
             cubeCheckRef.current = false;
 
@@ -142,6 +159,12 @@ function Container() {
 
                     cubeRotateLockRef.current = true;
                 }
+            }
+
+            if (dongnaeIndexRef.current % 2 === 0) {
+                setDongnaeIndexEven((dongnaeIndexEven) => !dongnaeIndexEven);
+            } else {
+                setDongnaeIndexOdd((dongnaeIndexOdd) => !dongnaeIndexOdd);
             }
 
             translateCube();
@@ -169,7 +192,10 @@ function Container() {
             wrapperRef={wrapperRef}
             cubeContRef={cubeContRef}
             dongnaeIndex={dongnaeIndex}
+            dongnaeIndexOdd={dongnaeIndexOdd}
+            dongnaeIndexEven={dongnaeIndexEven}
             dongnaeArray={dongnaeArray}
+            contentsBodyRef={contentsBodyRef}
         />
     );
 }
