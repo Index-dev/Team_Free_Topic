@@ -107,15 +107,27 @@ function Container() {
     // 키보드 큐브 이동 콜백함수
     const cubeKeyboardMove = useCallback((event) => {
         if (cubeContRef.current && cubeRotateLockRef.current === false) {
-            cubeRotateLockRef.current = true;
-
             if (event.key === 'ArrowLeft') {
+                cubeEndClientXRef.current = 100; // cubeClickEnd 실행을 위해 임의로 지정
+                cubeStartClientXRef.current = 0; // cubeClickEnd 실행을 위해 임의로 지정
+                cubeCheckRef.current = true;
+                cudeClickEnd();
+                /*
                 rotateDegree.current -= 180;
+                cubeRotateLockRef.current = true;
                 translateCube();
+                */
             }
             if (event.key === 'ArrowRight') {
+                cubeEndClientXRef.current = -100; // cubeClickEnd 실행을 위해 임의로 지정
+                cubeStartClientXRef.current = 0; // cubeClickEnd 실행을 위해 임의로 지정
+                cubeCheckRef.current = true;
+                cudeClickEnd();
+                /*
                 rotateDegree.current += 180;
+                cubeRotateLockRef.current = true;
                 translateCube();
+                */
             }
         }
     }, []);
@@ -140,25 +152,25 @@ function Container() {
             cubeCheckRef.current = false;
 
             if (cubeEndClientXRef.current - cubeStartClientXRef.current > 20) {
-                if (dongnaeIndexRef.current > 0) {
-                    // 배열 범위 내에서만 회전
-                    rotateDegree.current -= 180;
+                rotateDegree.current -= 180;
 
-                    dongnaeIndexRef.current--;
-                    setDongnaeIndex(dongnaeIndexRef.current);
-
-                    cubeRotateLockRef.current = true;
+                dongnaeIndexRef.current--;
+                if (dongnaeIndexRef.current < 0) {
+                    dongnaeIndexRef.current = dongnaeArray.length - 1;
                 }
+                setDongnaeIndex(dongnaeIndexRef.current);
+
+                cubeRotateLockRef.current = true;
             } else if (cubeEndClientXRef.current - cubeStartClientXRef.current < -20) {
-                if (dongnaeIndexRef.current < dongnaeArray.length - 1) {
-                    // 배열 범위 내에서만 회전
-                    rotateDegree.current += 180;
+                rotateDegree.current += 180;
 
-                    dongnaeIndexRef.current++;
-                    setDongnaeIndex(dongnaeIndexRef.current);
-
-                    cubeRotateLockRef.current = true;
+                dongnaeIndexRef.current++;
+                if (dongnaeIndexRef.current >= dongnaeArray.length) {
+                    dongnaeIndexRef.current = 0;
                 }
+                setDongnaeIndex(dongnaeIndexRef.current);
+
+                cubeRotateLockRef.current = true;
             }
 
             if (dongnaeIndexRef.current % 2 === 0) {
@@ -182,8 +194,17 @@ function Container() {
     }
 
     function handleResize() {
-        if (cubeContRef.current) setCubeHeight(cubeContRef.current.offsetHeight);
-        if (wrapperRef.current) wrapperRef.current.style.height = `${window.innerHeight}px`;
+        if (cubeContRef.current) {
+            // transition이 있으면 duration동안 offsetHeight값이 변화되기 때문에 cubeHeight가 실질적인 높이가 저장되지 않음
+            // transition을 제거했다가 다시 적용
+            cubeContRef.current.style.transition = '';
+
+            setCubeHeight(cubeContRef.current.offsetHeight);
+            translateCube(); // 사이즈 변화될 때 translateZ도 변화를 적용시키기
+
+            cubeContRef.current.style.transition = `0.8s ease-out`;
+        }
+        // if (wrapperRef.current) wrapperRef.current.style.height = `${window.innerHeight}px`;
     }
 
     return (

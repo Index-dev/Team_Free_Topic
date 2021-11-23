@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Logo from '../../components/icons/logo';
 import KaKaoMap from '../../components/home/kakaoMap';
 import { Idongnae } from '../../interface/home';
+import { useRecoilValue } from 'recoil';
+import { screenTypeState } from '../../modules/recoil/screenType';
 
 const Presenter = (props: propsIState) => {
     const {
@@ -17,8 +19,10 @@ const Presenter = (props: propsIState) => {
         contentsBodyRef,
     } = props;
 
+    const screenType = useRecoilValue(screenTypeState);
+
     return (
-        <Wrapper ref={wrapperRef}>
+        <Wrapper ref={wrapperRef} screenType={screenType}>
             <Background>
                 <video
                     src="https://player.vimeo.com/external/511201710.hd.mp4?s=7eb1bc688b0c9c5c4e3dcca5e3c2a2a63626e546&profile_id=174"
@@ -30,11 +34,14 @@ const Presenter = (props: propsIState) => {
                 ></video>
             </Background>
 
-            <CubeContainer ref={cubeContRef} cubeHeight={cubeHeight}>
+            <CubeContainer ref={cubeContRef} cubeHeight={cubeHeight} screenType={screenType}>
                 <CubeHeader cubeHeight={cubeHeight}>
-                    <div style={{ width: '70%', height: '50%' }}>
+                    <CubeLogoSection reverse={false}>
                         <Logo />
-                    </div>
+                    </CubeLogoSection>
+                    <CubeLogoSection reverse={true}>
+                        <Logo />
+                    </CubeLogoSection>
                 </CubeHeader>
                 {useMemo(() => {
                     return (
@@ -71,12 +78,12 @@ const Presenter = (props: propsIState) => {
                 }, [dongnaeIndexOdd])}
             </CubeContainer>
 
-            <ContentsContainer>
+            <ContentsContainer screenType={screenType}>
                 <ContentsHeader index={dongnaeIndex} length={dongnaeArray.length}>
                     {dongnaeArray.map((dongnae, index) => {
                         return (
                             <ContentsIndexList key={index}>
-                                <ContentsIndex target={index === dongnaeIndex}>{index + 1}</ContentsIndex>
+                                <ContentsIndex target={String(index === dongnaeIndex)}>{index + 1}</ContentsIndex>
                             </ContentsIndexList>
                         );
                     })}
@@ -103,7 +110,7 @@ interface propsIState {
     contentsBodyRef: React.RefObject<HTMLDivElement>;
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ screenType: string }>`
     width: 100vw;
     height: 100vh;
 
@@ -111,6 +118,7 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    flex-direction: ${(props) => props.screenType !== 'isPC' && 'column'};
 
     transform-style: preserve-3d;
 `;
@@ -126,15 +134,22 @@ const Background = styled.div`
     background-color: #777777;
 `;
 
-const CubeContainer = styled.div<{ cubeHeight: number }>`
+const CubeContainer = styled.div<{ cubeHeight: number; screenType: string }>`
     --border-color: #cccccc;
 
+    /* 
     min-width: 120px;
     width: min(45vw, 40vh);
     max-width: 500px;
     min-height: 120px;
     height: min(45vw, 40vh);
-    max-height: 500px;
+    max-height: 500px; 
+    */
+
+    width: min(380px, 100px + 25vw);
+    height: min(380px, 100px + 25vw);
+
+    margin-top: ${(props) => props.screenType !== 'isPC' && '100px'};
 
     transform: rotateX(70deg) rotateZ(45deg) translateZ(${(props) => (props.cubeHeight * -1) / 2}px);
     transform-style: preserve-3d;
@@ -155,8 +170,14 @@ const CubeHeader = styled(CubeShape)<{ cubeHeight: number }>`
 
     background: #22ff22;
 
-    padding-left: 1em;
     border: 1px solid var(--border-color);
+`;
+
+const CubeLogoSection = styled.div<{ reverse: boolean }>`
+    width: 100%;
+    height: 50%;
+
+    transform: ${(props) => props.reverse && 'rotate(180deg)'};
 `;
 
 const CubeSquare1 = styled(CubeShape)`
@@ -201,7 +222,7 @@ const CubeImage2 = styled(CubeImage)`
     transform: rotate(90deg);
 `;
 
-const ContentsContainer = styled.div`
+const ContentsContainer = styled.div<{ screenType: string }>`
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -210,7 +231,8 @@ const ContentsContainer = styled.div`
 
     z-index: 0;
 
-    margin-left: min(150px, 40px + 12.5vw);
+    margin-left: ${(props) => props.screenType === 'isPC' && 'min(150px, 40px + 7.5vw)'};
+    margin-top: ${(props) => props.screenType !== 'isPC' && '100px'};
 
     text-align: center;
 
@@ -233,9 +255,9 @@ const ContentsIndexList = styled.div`
 
 const ContentsBody = styled.div``;
 
-const ContentsIndex = styled.span<{ target: boolean }>`
-    width: 24px;
-    height: 24px;
+const ContentsIndex = styled.span<{ target: string }>`
+    width: ${(props) => (props.target === 'true' ? '24px' : '0')};
+    height: ${(props) => (props.target === 'true' ? '24px' : '16px')};
 
     display: flex;
     justify-content: center;
@@ -245,9 +267,11 @@ const ContentsIndex = styled.span<{ target: boolean }>`
 
     border-radius: 50%;
 
-    background-color: ${(props) => props.target && 'red'};
+    background-color: ${(props) => props.target === 'true' && 'red'};
 
     transition: 0.8s ease-out;
+
+    color: #fff;
 `;
 
 const ContentsTitle = styled.h2`
