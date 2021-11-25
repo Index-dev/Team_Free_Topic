@@ -7,6 +7,17 @@ import { Idongnae } from '../../interface/home';
 import { useRecoilValue } from 'recoil';
 import { screenTypeState } from '../../modules/recoil/screenType';
 
+interface propsIState {
+    cubeHeight: number;
+    wrapperRef: React.RefObject<HTMLDivElement>;
+    cubeContRef: React.RefObject<HTMLDivElement>;
+    dongnaeIndex: number;
+    dongnaeIndexOdd: boolean;
+    dongnaeIndexEven: boolean;
+    dongnaeArray: Idongnae[];
+    contentsBodyRef: React.RefObject<HTMLDivElement>;
+}
+
 const Presenter = (props: propsIState) => {
     const {
         cubeHeight,
@@ -98,17 +109,6 @@ const Presenter = (props: propsIState) => {
 };
 
 export default Presenter;
-
-interface propsIState {
-    cubeHeight: number;
-    wrapperRef: React.RefObject<HTMLDivElement>;
-    cubeContRef: React.RefObject<HTMLDivElement>;
-    dongnaeIndex: number;
-    dongnaeIndexOdd: boolean;
-    dongnaeIndexEven: boolean;
-    dongnaeArray: Idongnae[];
-    contentsBodyRef: React.RefObject<HTMLDivElement>;
-}
 
 const Wrapper = styled.div<{ screenType: string }>`
     width: 100vw;
