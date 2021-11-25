@@ -15,9 +15,21 @@
                 height: 100%;
                 position: fixed !important;
                 top: 0;
+
+                /* 글자 드래그 방지 */
+                -ms-user-select: none; 
+                -moz-user-select: -moz-none;
+                -khtml-user-select: none;
+                -webkit-user-select: none;
+                user-select: none;
             }
         </style>
         <title>Document</title>
+        <!-- 카카오 지도 script 추가 -->
+        <script 
+            type="text/javascript" 
+            src="<%= htmlWebpackPlugin.options.kakaoUrl %>">
+        </script>
     </head>
     <body id="dongnae-body">
         <div id="root"></div>
