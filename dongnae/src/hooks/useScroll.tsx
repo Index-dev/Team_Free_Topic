@@ -15,6 +15,16 @@ export function useScroll() {
     };
 
     useEffect(() => {
+        const checkTimeout = setTimeout(() => {
+            if (scrollDirection === 'up') {
+                setScrollDirection('down');
+            }
+        }, 5000);
+
+        return () => clearTimeout(checkTimeout);
+    }, [scrollDirection]);
+
+    useEffect(() => {
         window.addEventListener('scroll', listener, { capture: true });
         return () => window.removeEventListener('scroll', listener);
     }, []);
