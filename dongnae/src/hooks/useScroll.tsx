@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 export function useScroll() {
-    const [bodyOffset, setBodyOffset] = useState<DOMRect>(document.body.getBoundingClientRect());
-    const [scrollY, setScrollY] = useState<number>(bodyOffset.top);
-    const [scrollX, setScrollX] = useState<number>(bodyOffset.left);
+    const [scrollY, setScrollY] = useState<number>(window.scrollY);
+    const [scrollX, setScrollX] = useState<number>(window.scrollX);
     const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
 
     const lastScrollTopRef = useRef(0);
-    const lastScrollTop = lastScrollTopRef.current;
     const listener = () => {
-        setBodyOffset(document.body.getBoundingClientRect());
-        setScrollY(-bodyOffset.top);
-        setScrollX(bodyOffset.left);
-        setScrollDirection(lastScrollTop > -bodyOffset.top ? 'down' : 'up');
-        lastScrollTopRef.current = -bodyOffset.top;
+        setScrollY(window.scrollY);
+        setScrollX(window.scrollX);
+        console.log(lastScrollTopRef.current, window.scrollY);
+        setScrollDirection(lastScrollTopRef.current > window.scrollY ? 'up' : 'down');
+        lastScrollTopRef.current = window.scrollY;
     };
 
     useEffect(() => {

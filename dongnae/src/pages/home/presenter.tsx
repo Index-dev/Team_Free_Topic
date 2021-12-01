@@ -31,7 +31,7 @@ const Presenter = (props: propsIState) => {
                     <CubeSquare4 />
                 </CubeContainer>
             </Wrapper>
-            <div style={{ marginBottom: '100rem' }}></div>
+            <div style={{ paddingBottom: '100rem' }}></div>
         </>
     );
 };
