@@ -1,23 +1,69 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Idongnae } from '../../interface/home';
 import Presenter from './presenter';
+import kakaofriends from '../../assets/images/kakaofriends.png';
 
 function Container() {
+    // useState
     const [cubeHeight, setCubeHeight] = useState(0);
+    const [dongnaeIndex, setDongnaeIndex] = useState<number>(0); // 동내배열 현재 인덱스
+    const [dongnaeIndexOdd, setDongnaeIndexOdd] = useState<boolean>(false); // 인덱스 홀수 반응형을 위한 상태값
+    const [dongnaeIndexEven, setDongnaeIndexEven] = useState<boolean>(false); // 인덱스 홀수 반응형을 위한 상태값
+
+    // useRef
     const wrapperRef = useRef<HTMLDivElement>(null);
+
     const cubeContRef = useRef<HTMLDivElement>(null);
-    const rotateDegree = useRef<number>(0);
     const cubeStartClientXRef = useRef<number>(0); // 큐브 클릭(터치) 처음 위치
     const cubeEndClientXRef = useRef<number>(0); // 큐브 클릭(터치) 마지막 위치
     const cubeCheckRef = useRef<boolean>(false); // 큐브 클릭(터치) 여부
     const cubeRotateLockRef = useRef<boolean>(false); // 큐브 회전 중 변경 금지
+    const rotateDegree = useRef<number>(0);
 
+    const dongnaeIndexRef = useRef<number>(dongnaeIndex); // 동내배열 현재 인덱스
+
+    const contentsBodyRef = useRef<HTMLDivElement>(null);
+
+    // variable
+    const dongnaeArray: Idongnae[] = [
+        {
+            title: '안양',
+            description: '안양은 성찬이가 사는 동네입니다.',
+            LatLngX: 37.3901,
+            LatLngY: 126.9507,
+            imageUrl: kakaofriends,
+        },
+        {
+            title: '부천',
+            description: '부천은 영현이가 사는 동네입니다.',
+            LatLngX: 37.4842,
+            LatLngY: 126.7827,
+            imageUrl: kakaofriends,
+        },
+        {
+            title: '역삼',
+            description: '한 때 직장이었던 동네입니다.',
+            LatLngX: 37.5008,
+            LatLngY: 127.0365,
+            imageUrl: kakaofriends,
+        },
+        {
+            title: '명동',
+            description: '놀러갔던 동네입니다.',
+            LatLngX: 37.5609,
+            LatLngY: 126.9864,
+            imageUrl: kakaofriends,
+        },
+    ];
+
+    // useEffect
     useEffect(() => {
         handleResize();
         window.addEventListener('resize', handleResize);
         window.addEventListener('keydown', cubeKeyboardMove);
 
         // cube 회전 이벤트
-        if (cubeContRef.current) {
+        if (cubeContRef.current && wrapperRef.current) {
             // web에서 마우스 클릭 시
             cubeContRef.current.addEventListener('mousedown', (event) => {
                 cubeClickStart(event.clientX, event.clientX);
@@ -27,7 +73,8 @@ function Container() {
                 cudeClickMove(event.clientX);
             });
 
-            cubeContRef.current.addEventListener('mouseup', () => {
+            // 큐브 밖에서 클릭 해제할 경우도 적용
+            wrapperRef.current.addEventListener('mouseup', () => {
                 cudeClickEnd();
             });
 
@@ -40,7 +87,8 @@ function Container() {
                 cudeClickMove(event.targetTouches[0].clientX);
             });
 
-            cubeContRef.current.addEventListener('touchend', () => {
+            // 큐브 밖에서 클릭 해제할 경우도 적용
+            wrapperRef.current.addEventListener('touchend', () => {
                 cudeClickEnd();
             });
 
@@ -59,15 +107,27 @@ function Container() {
     // 키보드 큐브 이동 콜백함수
     const cubeKeyboardMove = useCallback((event) => {
         if (cubeContRef.current && cubeRotateLockRef.current === false) {
-            cubeRotateLockRef.current = true;
-
             if (event.key === 'ArrowLeft') {
+                cubeEndClientXRef.current = 100; // cubeClickEnd 실행을 위해 임의로 지정
+                cubeStartClientXRef.current = 0; // cubeClickEnd 실행을 위해 임의로 지정
+                cubeCheckRef.current = true;
+                cudeClickEnd();
+                /*
                 rotateDegree.current -= 180;
+                cubeRotateLockRef.current = true;
                 translateCube();
+                */
             }
             if (event.key === 'ArrowRight') {
+                cubeEndClientXRef.current = -100; // cubeClickEnd 실행을 위해 임의로 지정
+                cubeStartClientXRef.current = 0; // cubeClickEnd 실행을 위해 임의로 지정
+                cubeCheckRef.current = true;
+                cudeClickEnd();
+                /*
                 rotateDegree.current += 180;
+                cubeRotateLockRef.current = true;
                 translateCube();
+                */
             }
         }
     }, []);
@@ -90,15 +150,35 @@ function Container() {
     function cudeClickEnd() {
         if (cubeContRef.current && cubeCheckRef.current === true && cubeRotateLockRef.current === false) {
             cubeCheckRef.current = false;
-            cubeRotateLockRef.current = true;
+
             if (cubeEndClientXRef.current - cubeStartClientXRef.current > 20) {
                 rotateDegree.current -= 180;
+
+                dongnaeIndexRef.current--;
+                if (dongnaeIndexRef.current < 0) {
+                    dongnaeIndexRef.current = dongnaeArray.length - 1;
+                }
+                setDongnaeIndex(dongnaeIndexRef.current);
+
+                cubeRotateLockRef.current = true;
             } else if (cubeEndClientXRef.current - cubeStartClientXRef.current < -20) {
                 rotateDegree.current += 180;
-            } else {
-                cubeRotateLockRef.current = false;
-                return;
+
+                dongnaeIndexRef.current++;
+                if (dongnaeIndexRef.current >= dongnaeArray.length) {
+                    dongnaeIndexRef.current = 0;
+                }
+                setDongnaeIndex(dongnaeIndexRef.current);
+
+                cubeRotateLockRef.current = true;
             }
+
+            if (dongnaeIndexRef.current % 2 === 0) {
+                setDongnaeIndexEven((dongnaeIndexEven) => !dongnaeIndexEven);
+            } else {
+                setDongnaeIndexOdd((dongnaeIndexOdd) => !dongnaeIndexOdd);
+            }
+
             translateCube();
         }
     }
@@ -114,11 +194,31 @@ function Container() {
     }
 
     function handleResize() {
-        if (cubeContRef.current) setCubeHeight(cubeContRef.current.offsetHeight);
-        if (wrapperRef.current) wrapperRef.current.style.height = `${window.innerHeight}px`;
+        if (cubeContRef.current) {
+            // transition이 있으면 duration동안 offsetHeight값이 변화되기 때문에 cubeHeight가 실질적인 높이가 저장되지 않음
+            // transition을 제거했다가 다시 적용
+            cubeContRef.current.style.transition = '';
+
+            setCubeHeight(cubeContRef.current.offsetHeight);
+            translateCube(); // 사이즈 변화될 때 translateZ도 변화를 적용시키기
+
+            cubeContRef.current.style.transition = `0.8s ease-out`;
+        }
+        // if (wrapperRef.current) wrapperRef.current.style.height = `${window.innerHeight}px`;
     }
 
-    return <Presenter cubeHeight={cubeHeight} wrapperRef={wrapperRef} cubeContRef={cubeContRef} />;
+    return (
+        <Presenter
+            cubeHeight={cubeHeight}
+            wrapperRef={wrapperRef}
+            cubeContRef={cubeContRef}
+            dongnaeIndex={dongnaeIndex}
+            dongnaeIndexOdd={dongnaeIndexOdd}
+            dongnaeIndexEven={dongnaeIndexEven}
+            dongnaeArray={dongnaeArray}
+            contentsBodyRef={contentsBodyRef}
+        />
+    );
 }
 
 export default Container;
