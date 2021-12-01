@@ -1,6 +1,6 @@
 import { atom, useRecoilState } from 'recoil';
 
-const checkScreenTypeAtom = atom({
+const screenTypeAtom = atom({
     key: '_ScreenType',
     default: { isPC: false, isTablet: false, isMobile: false },
 });
@@ -10,11 +10,11 @@ interface screenTypeIState {
     isTablet: boolean;
     isMobile: boolean;
 }
-export const checkScreenTypeRecoil = () => {
-    const [screenType, setScreenType] = useRecoilState<screenTypeIState>(checkScreenTypeAtom);
+export const screenTypeRecoil = () => {
+    const [screenType, setScreenType] = useRecoilState<screenTypeIState>(screenTypeAtom);
 
     return {
-        screenType: screenType,
+        type: screenType,
         setType: (screenType: screenTypeIState) => {
             setScreenType(screenType);
         },

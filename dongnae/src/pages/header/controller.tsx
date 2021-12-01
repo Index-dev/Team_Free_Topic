@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 
 import { useScroll } from '../../hooks/useScroll';
-import { checkScreenTypeRecoil } from '../../modules/recoil/screenType';
+import { screenTypeRecoil } from '../../modules/recoil/screenType';
 
 import Presenter from './presenter';
 
 function Container() {
-    const { isPC } = checkScreenTypeRecoil().screenType;
+    const { isPC } = screenTypeRecoil().type;
     const desktopContRef = useRef<HTMLDivElement>(null);
     const mobileContRef = useRef<HTMLDivElement>(null);
 
