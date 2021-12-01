@@ -116,7 +116,7 @@ const Wrapper = styled.div<{ isPC: boolean }>`
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    flex-direction: ${(props) => props.isPC && 'column'};
+    flex-direction: ${(props) => !props.isPC && 'column'};
 
     transform-style: preserve-3d;
 `;
@@ -147,7 +147,7 @@ const CubeContainer = styled.div<{ cubeHeight: number; isPC: boolean }>`
     width: min(380px, 100px + 25vw);
     height: min(380px, 100px + 25vw);
 
-    margin-top: ${(props) => props.isPC && '100px'};
+    margin-top: ${(props) => !props.isPC && '100px'};
 
     transform: rotateX(70deg) rotateZ(45deg) translateZ(${(props) => (props.cubeHeight * -1) / 2}px);
     transform-style: preserve-3d;
@@ -230,7 +230,7 @@ const ContentsContainer = styled.div<{ isPC: boolean }>`
     z-index: 0;
 
     margin-left: ${(props) => props.isPC && 'min(150px, 40px + 7.5vw)'};
-    margin-top: ${(props) => props.isPC && '100px'};
+    margin-top: ${(props) => !props.isPC && '100px'};
 
     text-align: center;
 
