@@ -1,8 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
-import scrollbar from 'smooth-scrollbar';
-
-scrollbar.init(document.querySelector('#dongnae-body') as HTMLElement);
 
 const globalStyles = createGlobalStyle`
     ${reset};

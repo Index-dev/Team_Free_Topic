@@ -1,28 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Scrollbar from 'smooth-scrollbar';
 
 export function useScroll() {
-    const scrollbar = Scrollbar.init(document.querySelector('#dongnae-body') as HTMLElement);
-
-    const [scrollY, setScrollY] = useState<number>(scrollbar.offset.y);
-    const [scrollX, setScrollX] = useState<number>(scrollbar.offset.x);
+    const [bodyOffset, setBodyOffset] = useState<DOMRect>(document.body.getBoundingClientRect());
+    const [scrollY, setScrollY] = useState<number>(bodyOffset.top);
+    const [scrollX, setScrollX] = useState<number>(bodyOffset.left);
     const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
 
     const lastScrollTopRef = useRef(0);
-
+    const lastScrollTop = lastScrollTopRef.current;
     const listener = () => {
-        setScrollY(scrollbar.offset.y);
-        setScrollX(scrollbar.offset.x);
-        setScrollDirection(
-            lastScrollTopRef.current > scrollY ? 'up' : lastScrollTopRef.current < scrollY ? 'down' : scrollDirection,
-        );
-        lastScrollTopRef.current = scrollY;
+        setBodyOffset(document.body.getBoundingClientRect());
+        setScrollY(-bodyOffset.top);
+        setScrollX(bodyOffset.left);
+        setScrollDirection(lastScrollTop > -bodyOffset.top ? 'down' : 'up');
+        lastScrollTopRef.current = -bodyOffset.top;
     };
 
     useEffect(() => {
-        scrollbar.addListener(listener);
-        return () => scrollbar.removeListener(listener);
-    });
+        window.addEventListener('scroll', listener, { capture: true });
+        return () => window.removeEventListener('scroll', listener);
+    }, []);
 
     return {
         scrollY,
