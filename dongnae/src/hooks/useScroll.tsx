@@ -9,10 +9,19 @@ export function useScroll() {
     const listener = () => {
         setScrollY(window.scrollY);
         setScrollX(window.scrollX);
-        console.log(lastScrollTopRef.current, window.scrollY);
         setScrollDirection(lastScrollTopRef.current > window.scrollY ? 'up' : 'down');
         lastScrollTopRef.current = window.scrollY;
     };
+
+    useEffect(() => {
+        const checkTimeout = setTimeout(() => {
+            if (scrollDirection === 'up') {
+                setScrollDirection('down');
+            }
+        }, 5000);
+
+        return () => clearTimeout(checkTimeout);
+    }, [scrollDirection]);
 
     useEffect(() => {
         window.addEventListener('scroll', listener, { capture: true });
