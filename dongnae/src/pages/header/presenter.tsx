@@ -1,21 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { screenTypeRecoil } from '../../modules/recoil/screenType';
+import { checkScreenTypeRecoil } from '../../modules/recoil/screenType';
 import Logo from '../../components/icons/logo';
 
 function Presenter(props: propsIState) {
     const { scrollY, scrollDirection, desktopContRef, mobileContRef } = props;
-    const screenInfo = screenTypeRecoil();
+    const { isPC } = checkScreenTypeRecoil().type;
 
     return (
-        <>
+        <HeaderContainer>
             <LogoContainer>
                 <LogoSizer>
                     <Logo />
                 </LogoSizer>
             </LogoContainer>
-            {screenInfo.type === 'isPC' ? (
+            {isPC ? (
                 <Desktop ref={desktopContRef}>
                     <h2>desktop Header</h2>
                 </Desktop>
@@ -26,7 +26,7 @@ function Presenter(props: propsIState) {
                     {scrollDirection}
                 </Mobile>
             )}
-        </>
+        </HeaderContainer>
     );
 }
 
@@ -38,6 +38,9 @@ interface propsIState {
     desktopContRef: React.RefObject<HTMLDivElement>;
     mobileContRef: React.RefObject<HTMLDivElement>;
 }
+
+const HeaderContainer = styled.header``;
+/* font-size: ${(props) => (props.isPC ? '0.9vw' : props.isTablet ? '2vw' : '3.2vw')}; */
 
 const LogoContainer = styled.div`
     width: 100%;
@@ -80,5 +83,6 @@ const Desktop = styled(Container)`
 `;
 
 const Mobile = styled(Container)`
+    display: flex;
     background: green;
 `;

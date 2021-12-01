@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 
-import { screenTypeRecoil } from '../../modules/recoil/screenType';
 import { useScroll } from '../../hooks/useScroll';
+import { checkScreenTypeRecoil } from '../../modules/recoil/screenType';
 
 import Presenter from './presenter';
 
 function Container() {
-    const screenInfo = screenTypeRecoil();
+    const { isPC } = checkScreenTypeRecoil().type;
     const desktopContRef = useRef<HTMLDivElement>(null);
     const mobileContRef = useRef<HTMLDivElement>(null);
 
@@ -26,12 +26,12 @@ function Container() {
     );
 
     useEffect(() => {
-        if (screenInfo.type === 'isPC') {
+        if (isPC) {
             window.addEventListener('mousemove', transformDesktopHeader);
 
             return () => window.removeEventListener('mousemove', transformDesktopHeader);
         }
-    }, [screenInfo]);
+    }, [isPC]);
 
     const passProps = {
         scrollY,

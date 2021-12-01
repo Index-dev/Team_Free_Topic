@@ -5,10 +5,15 @@ import Router from './router';
 import Header from './pages/header';
 import GlobalStyles from './globalStyle';
 
-import { screenTypeRecoil } from './modules/recoil/screenType';
+import { checkScreenTypeRecoil } from './modules/recoil/screenType';
 
 const App = () => {
-    const screenInfo = screenTypeRecoil();
+    const checkScreenType = checkScreenTypeRecoil();
+
+    const isPC = useMediaQuery({
+        query: '(min-width: 1024px)',
+    });
+
     const isTablet = useMediaQuery({
         query: '(min-width: 650px) and (max-width: 1023px)',
     });
@@ -16,17 +21,19 @@ const App = () => {
         query: '(max-width: 649px)',
     });
 
+    const defaultScreenType = { isPC: false, isTablet: false, isMobile: false };
+
     useEffect(() => {
         function setScreenType() {
-            if (isTablet) screenInfo.setType('isTablet');
-            else if (isMobile) screenInfo.setType('isMobile');
-            else screenInfo.setType('isPC');
+            if (isPC) checkScreenType.setType({ ...defaultScreenType, isPC });
+            else if (isTablet) checkScreenType.setType({ ...defaultScreenType, isTablet });
+            else checkScreenType.setType({ ...defaultScreenType, isMobile });
         }
         window.addEventListener('resize', setScreenType);
         setScreenType();
 
         return () => window.removeEventListener('resize', setScreenType);
-    }, [isTablet, isMobile]);
+    }, [isPC, isTablet, isMobile]);
 
     return (
         <>
