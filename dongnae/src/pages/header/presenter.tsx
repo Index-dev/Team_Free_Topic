@@ -6,10 +6,10 @@ import Logo from '../../components/icons/logo';
 
 function Presenter(props: propsIState) {
     const { scrollY, scrollDirection, desktopContRef, mobileContRef } = props;
-    const { isPC } = checkScreenTypeRecoil().type;
+    const { isPC, isTablet } = checkScreenTypeRecoil().screenType;
 
     return (
-        <HeaderContainer>
+        <HeaderContainer isPC={isPC} isTablet={isTablet}>
             <LogoContainer>
                 <LogoSizer>
                     <Logo />
@@ -39,8 +39,9 @@ interface propsIState {
     mobileContRef: React.RefObject<HTMLDivElement>;
 }
 
-const HeaderContainer = styled.header``;
-/* font-size: ${(props) => (props.isPC ? '0.9vw' : props.isTablet ? '2vw' : '3.2vw')}; */
+const HeaderContainer = styled.header<{ isPC: boolean; isTablet: boolean }>`
+    font-size: ${(props) => (props.isPC ? '1vw' : props.isTablet ? '2vw' : '3.2vw')};
+`;
 
 const LogoContainer = styled.div`
     width: 100%;
@@ -77,7 +78,6 @@ const Container = styled.div`
 
 const Desktop = styled(Container)`
     background: blue;
-
     transition: transform 0.25s ease-out;
     transform: translate3d(0, -100%, 0);
 `;

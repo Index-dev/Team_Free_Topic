@@ -6,7 +6,7 @@ import { checkScreenTypeRecoil } from '../../modules/recoil/screenType';
 import Presenter from './presenter';
 
 function Container() {
-    const { isPC } = checkScreenTypeRecoil().type;
+    const { isPC } = checkScreenTypeRecoil().screenType;
     const desktopContRef = useRef<HTMLDivElement>(null);
     const mobileContRef = useRef<HTMLDivElement>(null);
 
