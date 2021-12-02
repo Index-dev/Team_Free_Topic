@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import Logo from '../../components/icons/logo';
 import KaKaoMap from '../../components/home/kakaoMap';
 import { Idongnae } from '../../interface/home';
-import { useRecoilValue } from 'recoil';
-import { screenTypeState } from '../../modules/recoil/screenType';
+import { screenTypeRecoil } from '../../modules/recoil/screenType';
 
 interface propsIState {
     cubeHeight: number;
@@ -29,11 +28,10 @@ const Presenter = (props: propsIState) => {
         dongnaeArray,
         contentsBodyRef,
     } = props;
-
-    const screenType = useRecoilValue(screenTypeState);
+    const { isPC } = screenTypeRecoil().type;
 
     return (
-        <Wrapper ref={wrapperRef} screenType={screenType}>
+        <Wrapper ref={wrapperRef} isPC={isPC}>
             <Background>
                 <video
                     src="https://player.vimeo.com/external/511201710.hd.mp4?s=7eb1bc688b0c9c5c4e3dcca5e3c2a2a63626e546&profile_id=174"
@@ -45,7 +43,7 @@ const Presenter = (props: propsIState) => {
                 ></video>
             </Background>
 
-            <CubeContainer ref={cubeContRef} cubeHeight={cubeHeight} screenType={screenType}>
+            <CubeContainer ref={cubeContRef} cubeHeight={cubeHeight} isPC={isPC}>
                 <CubeHeader cubeHeight={cubeHeight}>
                     <CubeLogoSection reverse={false}>
                         <Logo />
@@ -89,7 +87,7 @@ const Presenter = (props: propsIState) => {
                 }, [dongnaeIndexOdd])}
             </CubeContainer>
 
-            <ContentsContainer screenType={screenType}>
+            <ContentsContainer isPC={isPC}>
                 <ContentsHeader index={dongnaeIndex} length={dongnaeArray.length}>
                     {dongnaeArray.map((dongnae, index) => {
                         return (
@@ -110,7 +108,7 @@ const Presenter = (props: propsIState) => {
 
 export default Presenter;
 
-const Wrapper = styled.div<{ screenType: string }>`
+const Wrapper = styled.div<{ isPC: boolean }>`
     width: 100vw;
     height: 100vh;
 
@@ -118,7 +116,7 @@ const Wrapper = styled.div<{ screenType: string }>`
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    flex-direction: ${(props) => props.screenType !== 'isPC' && 'column'};
+    flex-direction: ${(props) => !props.isPC && 'column'};
 
     transform-style: preserve-3d;
 `;
@@ -134,7 +132,7 @@ const Background = styled.div`
     background-color: #777777;
 `;
 
-const CubeContainer = styled.div<{ cubeHeight: number; screenType: string }>`
+const CubeContainer = styled.div<{ cubeHeight: number; isPC: boolean }>`
     --border-color: #cccccc;
 
     /* 
@@ -149,7 +147,7 @@ const CubeContainer = styled.div<{ cubeHeight: number; screenType: string }>`
     width: min(380px, 100px + 25vw);
     height: min(380px, 100px + 25vw);
 
-    margin-top: ${(props) => props.screenType !== 'isPC' && '100px'};
+    margin-top: ${(props) => !props.isPC && '100px'};
 
     transform: rotateX(70deg) rotateZ(45deg) translateZ(${(props) => (props.cubeHeight * -1) / 2}px);
     transform-style: preserve-3d;
@@ -222,7 +220,7 @@ const CubeImage2 = styled(CubeImage)`
     transform: rotate(90deg);
 `;
 
-const ContentsContainer = styled.div<{ screenType: string }>`
+const ContentsContainer = styled.div<{ isPC: boolean }>`
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -231,8 +229,8 @@ const ContentsContainer = styled.div<{ screenType: string }>`
 
     z-index: 0;
 
-    margin-left: ${(props) => props.screenType === 'isPC' && 'min(150px, 40px + 7.5vw)'};
-    margin-top: ${(props) => props.screenType !== 'isPC' && '100px'};
+    margin-left: ${(props) => props.isPC && 'min(150px, 40px + 7.5vw)'};
+    margin-top: ${(props) => !props.isPC && '100px'};
 
     text-align: center;
 
