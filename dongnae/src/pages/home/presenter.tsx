@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import Logo from '../../components/icons/logo';
 import KaKaoMap from '../../components/home/kakaoMap';
@@ -15,6 +15,7 @@ interface propsIState {
     dongnaeIndexEven: boolean;
     dongnaeArray: Idongnae[];
     contentsBodyRef: React.RefObject<HTMLDivElement>;
+    onClickContentsBody: () => void;
 }
 
 const Presenter = (props: propsIState) => {
@@ -27,6 +28,7 @@ const Presenter = (props: propsIState) => {
         dongnaeIndexEven,
         dongnaeArray,
         contentsBodyRef,
+        onClickContentsBody,
     } = props;
     const { isPC } = screenTypeRecoil().type;
 
@@ -97,7 +99,7 @@ const Presenter = (props: propsIState) => {
                         );
                     })}
                 </ContentsHeader>
-                <ContentsBody ref={contentsBodyRef}>
+                <ContentsBody ref={contentsBodyRef} onClick={onClickContentsBody}>
                     <ContentsTitle>{dongnaeArray[dongnaeIndex].title}</ContentsTitle>
                     <ContentsDescription>{dongnaeArray[dongnaeIndex].description}</ContentsDescription>
                 </ContentsBody>
@@ -251,7 +253,9 @@ const ContentsIndexList = styled.div`
     width: 160px;
 `;
 
-const ContentsBody = styled.div``;
+const ContentsBody = styled.div`
+    cursor: pointer;
+`;
 
 const ContentsIndex = styled.span<{ target: string }>`
     width: ${(props) => (props.target === 'true' ? '24px' : '0')};

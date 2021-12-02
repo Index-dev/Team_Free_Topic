@@ -2,8 +2,11 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Idongnae } from '../../interface/home';
 import Presenter from './presenter';
 import kakaofriends from '../../assets/images/kakaofriends.png';
+import { useHistory } from 'react-router';
 
 function Container() {
+    const history = useHistory();
+
     // useState
     const [cubeHeight, setCubeHeight] = useState(0);
     const [dongnaeIndex, setDongnaeIndex] = useState<number>(0); // 동내배열 현재 인덱스
@@ -32,6 +35,7 @@ function Container() {
             LatLngX: 37.3901,
             LatLngY: 126.9507,
             imageUrl: kakaofriends,
+            link: '#',
         },
         {
             title: '부천',
@@ -39,6 +43,7 @@ function Container() {
             LatLngX: 37.4842,
             LatLngY: 126.7827,
             imageUrl: kakaofriends,
+            link: '#',
         },
         {
             title: '역삼',
@@ -46,6 +51,7 @@ function Container() {
             LatLngX: 37.5008,
             LatLngY: 127.0365,
             imageUrl: kakaofriends,
+            link: '#',
         },
         {
             title: '명동',
@@ -53,6 +59,7 @@ function Container() {
             LatLngX: 37.5609,
             LatLngY: 126.9864,
             imageUrl: kakaofriends,
+            link: '#',
         },
     ];
 
@@ -207,6 +214,10 @@ function Container() {
         // if (wrapperRef.current) wrapperRef.current.style.height = `${window.innerHeight}px`;
     }
 
+    function onClickContentsBody() {
+        history.push(dongnaeArray[dongnaeIndex].link);
+    }
+
     return (
         <Presenter
             cubeHeight={cubeHeight}
@@ -217,6 +228,7 @@ function Container() {
             dongnaeIndexEven={dongnaeIndexEven}
             dongnaeArray={dongnaeArray}
             contentsBodyRef={contentsBodyRef}
+            onClickContentsBody={onClickContentsBody}
         />
     );
 }
