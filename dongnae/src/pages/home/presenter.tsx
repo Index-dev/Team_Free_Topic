@@ -137,15 +137,6 @@ const Background = styled.div`
 const CubeContainer = styled.div<{ cubeHeight: number; isPC: boolean }>`
     --border-color: #cccccc;
 
-    /* 
-    min-width: 120px;
-    width: min(45vw, 40vh);
-    max-width: 500px;
-    min-height: 120px;
-    height: min(45vw, 40vh);
-    max-height: 500px; 
-    */
-
     width: min(380px, 100px + 25vw);
     height: min(380px, 100px + 25vw);
 
