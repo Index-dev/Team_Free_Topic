@@ -21,13 +21,11 @@ const App = () => {
         query: '(max-width: 649px)',
     });
 
-    const defaultScreenType = { isPC: false, isTablet: false, isMobile: false };
-
     useEffect(() => {
         function setScreenType() {
-            if (isPC) screenType.setType({ ...defaultScreenType, isPC });
-            else if (isTablet) screenType.setType({ ...defaultScreenType, isTablet });
-            else screenType.setType({ ...defaultScreenType, isMobile });
+            if (isPC) screenType.setIsPC();
+            else if (isTablet) screenType.setIsTablet();
+            else screenType.setIsMobile();
         }
         window.addEventListener('resize', setScreenType);
         setScreenType();
