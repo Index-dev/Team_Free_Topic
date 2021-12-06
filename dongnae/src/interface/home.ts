@@ -4,4 +4,5 @@ export interface Idongnae {
     LatLngX: number;
     LatLngY: number;
     imageUrl: string;
+    link: string;
 }
