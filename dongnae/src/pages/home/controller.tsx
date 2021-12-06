@@ -2,11 +2,9 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Idongnae } from '../../interface/home';
 import Presenter from './presenter';
 import kakaofriends from '../../assets/images/kakaofriends.png';
-import { useHistory } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 
-function Container() {
-    const history = useHistory();
-
+function Container({ history }: RouteComponentProps) {
     // useState
     const [cubeHeight, setCubeHeight] = useState(0);
     const [dongnaeIndex, setDongnaeIndex] = useState<number>(0); // 동내배열 현재 인덱스
@@ -35,7 +33,7 @@ function Container() {
             LatLngX: 37.3901,
             LatLngY: 126.9507,
             imageUrl: kakaofriends,
-            link: '#',
+            link: '/dongnae/anyang',
         },
         {
             title: '부천',
