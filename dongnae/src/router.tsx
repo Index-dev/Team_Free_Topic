@@ -8,7 +8,8 @@ const Router: React.FC<RouteComponentProps> = ({ history }): JSX.Element => {
     return (
         <React.Suspense fallback={<div>Loading...</div>}>
             <Switch>
-                <Route exact path="/" component={() => <Redirect to="/home" />} />
+                {/* <Route exact path="/" component={() => <Redirect to="/home" />} /> */}
+                <Route exact path="/" component={Anyang} />
                 <Route exact path="/home" component={Home} />
                 <Route exact path="/dongnae/anyang" component={Anyang} />
             </Switch>
