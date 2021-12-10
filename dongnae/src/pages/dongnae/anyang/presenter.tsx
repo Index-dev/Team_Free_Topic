@@ -1,13 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import hogyeMarket_1 from '../../../assets/images/hogyeMarket_1.jpg';
 import hogyeMarket_2 from '../../../assets/images/hogyeMarket_2.jpg';
 
 interface propsIState {
+    innerHeight: number;
+    innerWidth: number;
     contentsRef1: React.RefObject<HTMLDivElement>;
     contentsRef2: React.RefObject<HTMLDivElement>;
     contentsRef3: React.RefObject<HTMLDivElement>;
     contentsRef4: React.RefObject<HTMLDivElement>;
+    pyeongchonImageRef1: React.RefObject<HTMLImageElement>;
+    pyeongchonImageRef2: React.RefObject<HTMLImageElement>;
+    pyeongchonImageRef3: React.RefObject<HTMLImageElement>;
+    pyeongchonImageRef4: React.RefObject<HTMLImageElement>;
+    pyeongchonTitleSectionRef: React.RefObject<HTMLImageElement>;
 }
 
 function Presenter(props: propsIState) {
@@ -17,11 +24,11 @@ function Presenter(props: propsIState) {
 
             <DongnaeContainer>
                 <HogyeMarketContainer>
-                    <TitleSection>
+                    <TitleSection isSticky={true}>
                         <Title>호계종합시장</Title>
                     </TitleSection>
 
-                    <ImageSection>
+                    <HogyeMarketImageSection>
                         <HogyeMarketImageContainer>
                             <HogyeMarketImage src={hogyeMarket_1} />
                             <HogyeMarketContentsContainer>
@@ -45,8 +52,46 @@ function Presenter(props: propsIState) {
                             </HogyeMarketContentsContainer>
                             <HogyeMarketImage src={hogyeMarket_2} />
                         </HogyeMarketImageContainer>
-                    </ImageSection>
+                    </HogyeMarketImageSection>
                 </HogyeMarketContainer>
+
+                <PyeongchonAcademyContainer>
+                    <TitleSection isSticky={false} ref={props.pyeongchonTitleSectionRef}>
+                        <Title>평촌학원가</Title>
+                    </TitleSection>
+
+                    <PyeongchonImageSection height={props.innerHeight * 4}>
+                        <PyeongchonImageContainer>
+                            <PyeongchonImage
+                                src={hogyeMarket_2}
+                                ref={props.pyeongchonImageRef1}
+                                height={props.innerHeight / 2}
+                            />
+                            <PyeongchonImage
+                                src={hogyeMarket_2}
+                                ref={props.pyeongchonImageRef2}
+                                height={props.innerHeight / 2}
+                            />
+                            <PyeongchonImage
+                                src={hogyeMarket_2}
+                                ref={props.pyeongchonImageRef3}
+                                height={props.innerHeight / 2}
+                            />
+                            <PyeongchonImage
+                                src={hogyeMarket_2}
+                                ref={props.pyeongchonImageRef4}
+                                height={props.innerHeight / 2}
+                            />
+                        </PyeongchonImageContainer>
+                    </PyeongchonImageSection>
+
+                    <PyeongchonContentsSection>
+                        <PyeongchonContents>전국 2위를 자랑하는 대형 학원가 거리</PyeongchonContents>
+                        <PyeongchonContents>
+                            안양에 사는 학생들 뿐만 아니라 인근 지역에 사는 학생들도 학원을 다니기 위해 방문하는 장소
+                        </PyeongchonContents>
+                    </PyeongchonContentsSection>
+                </PyeongchonAcademyContainer>
             </DongnaeContainer>
         </Wrapper>
     );
@@ -64,11 +109,15 @@ const Header = styled.div`
 
 const DongnaeContainer = styled.div``;
 
-const TitleSection = styled.div`
+const TitleSection = styled.div<{ isSticky: boolean }>`
     height: 10vh;
 
-    position: sticky;
-    top: 0;
+    ${(props) =>
+        props.isSticky &&
+        css`
+            position: sticky;
+            top: 0;
+        `}
 
     margin: 60px 0;
 
@@ -81,12 +130,15 @@ const TitleSection = styled.div`
     z-index: 1;
 `;
 
-const ImageSection = styled.div``;
-
-const HogyeMarketContainer = styled.div`
-    max-width: 2048px;
-
+const Container = styled.div`
     margin: 0 auto;
+    margin-bottom: 168px;
+`;
+
+const HogyeMarketImageSection = styled.div``;
+
+const HogyeMarketContainer = styled(Container)`
+    max-width: 2048px;
 `;
 
 const HogyeMarketImageContainer = styled.div`
@@ -107,8 +159,41 @@ const HogyeMarketContentsContainer = styled.div`
     text-align: center;
 `;
 
+const PyeongchonAcademyContainer = styled(Container)`
+    max-width: 1024px;
+`;
+
+const PyeongchonImageSection = styled.div<{ height: number }>`
+    height: ${(props) => props.height}px;
+`;
+
+const PyeongchonImageContainer = styled.div`
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+
+    position: sticky;
+    top: 0;
+`;
+
+const PyeongchonContentsSection = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    margin: 108px 0;
+`;
+
 const HogyeMarketImage = styled.img`
     width: 50%;
+`;
+
+const PyeongchonImage = styled.img<{ height: number }>`
+    display: inline-block;
+
+    width: 100%;
+    height: ${(props) => props.height}px;
 `;
 
 const Title = styled.h2`
@@ -135,4 +220,13 @@ const HogyeMarketContentsTitle = styled(HogyeMarketContents)`
 const HogyeMarketContentsDescription = styled(HogyeMarketContents)`
     font-size: 1.4em;
     color: #6e6e73;
+`;
+
+const PyeongchonContents = styled.span`
+    font-size: 4.8em;
+    font-weight: bold;
+
+    word-break: keep-all;
+
+    line-height: 1.2em;
 `;
