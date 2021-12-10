@@ -38,6 +38,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'deploy'), // 빌드되는 파일들이 만들어지는 위치, __dirname: 현재 디렉토리
         filename: '[name].bundle.js', // 번들파일 이름: chunkName.bundle.js
+        publicPath: '/', // output 위치 지정
     },
 
     // webpack 서버 설정
