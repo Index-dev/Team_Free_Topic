@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useScroll } from '../../../hooks/useScroll';
 import Presenter from './presenter';
 
 function Controller() {
-    const { scrollY } = useScroll();
-
     // state
     const [innerHeight, setInnerHeight] = useState<number>(0);
     const [innerWidth, setInnerWidth] = useState<number>(0);
@@ -12,7 +9,6 @@ function Controller() {
     // ref
     const innerHeightRef = useRef<number>(0);
     const innerWidthRef = useRef<number>(0);
-    // const;
 
     const contentsRef1 = useRef<HTMLDivElement>(null);
     const contentsRef2 = useRef<HTMLDivElement>(null);
