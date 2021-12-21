@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import hogyeMarket_1 from '../../../assets/images/hogyeMarket_1.jpg';
 import hogyeMarket_2 from '../../../assets/images/hogyeMarket_2.jpg';
+import middlePark_1 from '../../../assets/images/middlePark_1.png';
 
 interface propsIState {
     innerHeight: number;
@@ -15,6 +16,16 @@ interface propsIState {
     pyeongchonImageRef3: React.RefObject<HTMLImageElement>;
     pyeongchonImageRef4: React.RefObject<HTMLImageElement>;
     pyeongchonTitleSectionRef: React.RefObject<HTMLImageElement>;
+    pyeongchonAcademyContainerRef: React.RefObject<HTMLDivElement>;
+    middleParkMapImageContainerRef: React.RefObject<HTMLDivElement>;
+    middleParkContentsSectionRef1: React.RefObject<HTMLDivElement>;
+    middleParkBarRef1: React.RefObject<HTMLDivElement>;
+    middleParkContentsContanerRef1: React.RefObject<HTMLDivElement>;
+    middleParkContentsContanerRef2: React.RefObject<HTMLDivElement>;
+    middleParkBarRef2: React.RefObject<HTMLDivElement>;
+    middleParkContentsSectionRef2: React.RefObject<HTMLDivElement>;
+    middleParkContentsContanerRef3: React.RefObject<HTMLDivElement>;
+    middleParkContentsContanerRef4: React.RefObject<HTMLDivElement>;
 }
 
 function Presenter(props: propsIState) {
@@ -55,12 +66,12 @@ function Presenter(props: propsIState) {
                     </HogyeMarketImageSection>
                 </HogyeMarketContainer>
 
-                <PyeongchonAcademyContainer>
+                <PyeongchonAcademyContainer ref={props.pyeongchonAcademyContainerRef}>
                     <TitleSection isSticky={false} ref={props.pyeongchonTitleSectionRef}>
                         <Title>평촌학원가</Title>
                     </TitleSection>
 
-                    <PyeongchonImageSection height={props.innerHeight * 4}>
+                    <PyeongchonImageSection height={props.innerHeight * 4 * 2}>
                         <PyeongchonImageContainer>
                             <PyeongchonImage
                                 src={hogyeMarket_2}
@@ -92,6 +103,66 @@ function Presenter(props: propsIState) {
                         </PyeongchonContents>
                     </PyeongchonContentsSection>
                 </PyeongchonAcademyContainer>
+
+                <MiddleParkContainer>
+                    <MiddleParkImageSection>
+                        <MiddleParkImageContainer ref={props.middleParkMapImageContainerRef}>
+                            <MiddleParkMapImage src={middlePark_1} />
+
+                            <MiddleParkTop>
+                                <MiddleParkContentsSection ref={props.middleParkContentsSectionRef1}>
+                                    <MiddleParkImage src={middlePark_1} />
+                                    <div>
+                                        <MiddleParkContentsContainer ref={props.middleParkContentsContanerRef1}>
+                                            <MiddleParkContents>안양중앙공원의 중심</MiddleParkContents>
+                                            <MiddleParkSubContents>
+                                                안양중앙공원을 방문하면 어디서든 보이는 장소.애완동물 및 친구들과 산책을
+                                                할 때 항상 지나치는 장소이기 때문에 방문한 사람이면 누구나 기억하는 곳
+                                            </MiddleParkSubContents>
+                                        </MiddleParkContentsContainer>
+
+                                        <MiddleParkContentsContainer ref={props.middleParkContentsContanerRef2}>
+                                            <MiddleParkContents>한 여름에는 분수대</MiddleParkContents>
+                                            <MiddleParkSubContents>
+                                                한 여름에는 분수대로서 역할을 수행합니다. 더운 날씨에 부모님들과 같이
+                                                산책나온 아이들은 이곳에서 물놀이를 하면서 즐거운 시간을 보내기도
+                                                합니다. 수영장은 아니지만 집 앞에서 가볍게 즐길 수 있는 물놀이 장소가
+                                                되는 곳입니다.
+                                            </MiddleParkSubContents>
+                                        </MiddleParkContentsContainer>
+                                    </div>
+                                </MiddleParkContentsSection>
+                                <MiddleParkBar ref={props.middleParkBarRef1} />
+                            </MiddleParkTop>
+
+                            <MiddleParkBottom>
+                                <MiddleParkBar ref={props.middleParkBarRef2} />
+                                <MiddleParkContentsSection ref={props.middleParkContentsSectionRef2}>
+                                    <MiddleParkImage src={middlePark_1} />
+                                    <div>
+                                        <MiddleParkContentsContainer ref={props.middleParkContentsContanerRef3}>
+                                            <MiddleParkContents>안양중앙공원의 중심</MiddleParkContents>
+                                            <MiddleParkSubContents>
+                                                안양중앙공원을 방문하면 어디서든 보이는 장소.애완동물 및 친구들과 산책을
+                                                할 때 항상 지나치는 장소이기 때문에 방문한 사람이면 누구나 기억하는 곳
+                                            </MiddleParkSubContents>
+                                        </MiddleParkContentsContainer>
+
+                                        <MiddleParkContentsContainer ref={props.middleParkContentsContanerRef4}>
+                                            <MiddleParkContents>한 여름에는 분수대</MiddleParkContents>
+                                            <MiddleParkSubContents>
+                                                한 여름에는 분수대로서 역할을 수행합니다. 더운 날씨에 부모님들과 같이
+                                                산책나온 아이들은 이곳에서 물놀이를 하면서 즐거운 시간을 보내기도
+                                                합니다. 수영장은 아니지만 집 앞에서 가볍게 즐길 수 있는 물놀이 장소가
+                                                되는 곳입니다.
+                                            </MiddleParkSubContents>
+                                        </MiddleParkContentsContainer>
+                                    </div>
+                                </MiddleParkContentsSection>
+                            </MiddleParkBottom>
+                        </MiddleParkImageContainer>
+                    </MiddleParkImageSection>
+                </MiddleParkContainer>
             </DongnaeContainer>
         </Wrapper>
     );
@@ -182,7 +253,79 @@ const PyeongchonContentsSection = styled.div`
     align-items: center;
     flex-direction: column;
 
-    margin: 108px 0;
+    margin: 108px 0 432px 0;
+`;
+
+const MiddleParkContainer = styled.div`
+    max-width: 1024px;
+
+    height: 2050vh;
+
+    margin: 0 auto;
+`;
+
+const MiddleParkImageSection = styled.div`
+    position: sticky;
+    top: 0;
+
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const MiddleParkImageContainer = styled.div`
+    position: relative;
+
+    width: 640px;
+`;
+
+const MiddleParkTop = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    position: absolute;
+    top: -578px;
+
+    width: 840px;
+
+    transform: translateX(-100px);
+`;
+
+const MiddleParkBottom = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    position: absolute;
+    top: 400px;
+
+    width: 840px;
+
+    transform: translateX(-100px);
+`;
+
+const MiddleParkContentsSection = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+
+    overflow: hidden;
+`;
+
+const MiddleParkContentsContainer = styled.div`
+    text-align: center;
+`;
+
+const MiddleParkBar = styled.div`
+    width: 1px;
+
+    background-color: #000;
 `;
 
 const HogyeMarketImage = styled.img`
@@ -194,6 +337,17 @@ const PyeongchonImage = styled.img<{ height: number }>`
 
     width: 100%;
     height: ${(props) => props.height}px;
+`;
+
+const MiddleParkMapImage = styled.img`
+    width: 100%;
+`;
+
+const MiddleParkImage = styled.img`
+    width: 402px;
+    height: 402px;
+
+    border-radius: 50%;
 `;
 
 const Title = styled.h2`
@@ -229,4 +383,21 @@ const PyeongchonContents = styled.span`
     word-break: keep-all;
 
     line-height: 1.2em;
+`;
+
+const MiddleParkContents = styled.h3`
+    display: block;
+
+    font-weight: 700;
+    font-size: 2.8em;
+
+    margin: 48px 0;
+
+    white-space: nowrap;
+`;
+
+const MiddleParkSubContents = styled.span`
+    line-height: 1.4em;
+
+    font-size: 1.3em;
 `;
